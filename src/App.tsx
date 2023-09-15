@@ -1,7 +1,11 @@
+import CardView from "./components/View/CardView";
+
 export function App() {
   return (
     <>
-      <h1></h1>
+    <div className="flex items-center justify-center text-center">
+      <CardView name={"Fulano da silva"} description={"Manager"} age={24} numberClicked={0} />
+    </div>
     </>
   )
 }
