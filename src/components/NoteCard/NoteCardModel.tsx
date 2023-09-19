@@ -1,4 +1,5 @@
 interface NoteCardModel {
-    note: number,
-    bg?: string
+    note?: number,
+    long?: boolean,
+    bg?: string,
 }

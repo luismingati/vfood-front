@@ -1,7 +1,7 @@
 interface ColaboratorCardModel { 
     name:string,  
     role:string, 
-    stars:number,
+    stars?:number,
     avatar?:string,
     bg?:string
 }
