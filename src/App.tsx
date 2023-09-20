@@ -1,9 +1,10 @@
-import ColaboratorCard from "./components/ColaboratorCard/ColaboratorCard";
+import MonthHighlight from "./components/MonthHighlight/MonthHighlight";
 
 export function App() {
+  
   return (
     <>
-      <ColaboratorCard name={"Alice Martins"} role={"Manager"} stars={3.5}/>
+      <MonthHighlight month={"Janeiro"} />
     </>
   )
 }
