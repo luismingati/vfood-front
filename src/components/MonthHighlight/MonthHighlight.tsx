@@ -1,37 +1,39 @@
+import CardHighlight, { GoalsTypes } from "../CardHighlight/CardHighlight";
 import { MonthHighlightModel } from "./MonthHighlightModel";
-import chevron from '../../assets/chevron.svg'
 
 const MonthHighlight = (props: MonthHighlightModel) => {
 
     return(
-        <div className="px-[18px] py-6 border-2 w-full max-w-[390px] h-[340px] rounded-[10px] border-[#D9D9D9] font-poppins">
+        <div className="px-[18px] py-6 border-[1px] w-full max-w-[390px] h-[340px] rounded-[10px] border-[#D9D9D9] font-poppins">
             <div className="flex justify-between items-center mb-5">
                 <h2 className="text-lg font-normal text-[#312843]">Destaques do mês</h2>
-                <p className="px-[10px] py-1 border-2 border-[#D9D9D9] rounded-[10px] text-[#A3A3A3] text-base font-normal">{props.month}</p>
+                <p className="px-[10px] py-1 border-[1px] border-[#D9D9D9] rounded-[10px] text-[#A3A3A3] text-base font-normal">{props.month}</p>
             </div>
-            <div className="overflow-y-auto flex flex-col items-center h-56 px-[10px] gap-4 divide-y-[1px] no-scrollbar">
-                <div className="h-2 w-32 bg-red-500 "></div>
-                <div className="flex items-center w-full pt-3 gap-[10px] cursor-pointer">
-                    <img src="" alt="azul" className="w-12 h-8"/>
-                    <p className="text-[#312843] text-base font-normal"><span className="font-bold">6 colaboradores</span> superaram a meta!</p>
-                    <img src={chevron} alt="" />
-                </div>
-                <div className="flex items-center w-full pt-3 gap-[10px] cursor-pointer">
-                    <img src="" alt="azul" className="w-12 h-8"/>
-                    <p className="text-[#312843] text-base font-normal"><span className="font-bold">6 colaboradores</span> superaram a meta!</p>
-                    <img src={chevron} alt="" />
-                </div>
-                <div className="flex items-center w-full pt-3 gap-[10px] cursor-pointer">
-                    <img src="" alt="azul" className="w-12 h-8"/>
-                    <p className="text-[#312843] text-base font-normal"><span className="font-bold">6 colaboradores</span> superaram a meta!</p>
-                    <img src={chevron} alt="" />
-                </div>
-                <div className="flex items-center w-full pt-3 gap-[10px] cursor-pointer">
-                    <img src="" alt="azul" className="w-12 h-8"/>
-                    <p className="text-[#312843] text-base font-normal"><span className="font-bold">6 colaboradores</span> superaram a meta!</p>
-                    <img src={chevron} alt="" />
-                </div>
-                
+
+            <div className="overflow-y-auto flex flex-col items-center h-56  gap-4 no-scrollbar justify-between">
+                <CardHighlight
+                    metaType={GoalsTypes.GOAL}
+                    count={6}
+                    message="atingiram o Desafio de seu Indicador!"
+                />
+                <CardHighlight
+                    metaType={GoalsTypes.SUPERGOAL}
+                    altText="Ícone de um troféu"
+                    count={10}
+                    message="atingiram a Supermeta de seu Indicador!"
+                />
+                <CardHighlight
+                    metaType={GoalsTypes.CHALLENGE}
+                    altText="Ícone de um troféu"
+                    count={15}
+                    message="atingiram a Meta de seu Indicador!"
+                />
+                <CardHighlight
+                    metaType={GoalsTypes.NOT_REACHED}
+                    altText="Ícone de um troféu"
+                    count={5}
+                    message="Não atingiram seu indicador!"
+                />
             </div>
         </div>
     )
