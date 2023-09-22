@@ -1,9 +1,9 @@
-import ColaboratorCard from "./components/ColaboratorCard/ColaboratorCard";
+import { Router } from "./router";
 
 export function App() {
   return (
     <>
-      <ColaboratorCard name={"Alice Martins"} role={"Manager"} stars={3.5}/>
+      <Router />
     </>
   )
 }
