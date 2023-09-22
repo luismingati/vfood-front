@@ -8,7 +8,6 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     setIndicatorsSummary(model);
   }, [model]);
 
-  console.log(indicatorsSummary);
   return {
     indicatorsSummary,
   };

@@ -8,20 +8,56 @@ import graph from "./assets/graph.svg";
 import plusIcon from "./assets/plusIcon.svg";
 import closeIcon from "./assets/closeIcon.svg";
 import backIcon from "./assets/backIcon.svg";
+import expandSelectIcon from "./assets/expandSelectIcon.svg";
 
 const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
   const viewModel = useIndicatorsSummaryViewModel(props);
   const [modalFlag, setModalFlag] = useState(false);
   const [indicatorModalStep, setIndicatorModalStep] = useState(0);
 
+  const [unitOptionsFlag, setUnitOptionsFlag] = useState(false);
+  const [unit, setUnit] = useState("");
+
+  const [indicatorsSearchResultsArray, setIndicatorsSearchResultsArray] =
+    useState<Array<IndicatorCard>>([]);
+  const [indicatorsSearchValue, setIndicatorsSearchValue] = useState("");
+
+  const handleSearchIndicators = (e: React.FormEvent<HTMLInputElement>) => {
+    console.log(e.currentTarget.value);
+    setIndicatorsSearchValue(e.currentTarget.value);
+
+    if (indicatorsSearchValue != "") {
+      const result = viewModel.indicatorsSummary.indicatorsArray.filter(
+        (indicator) => indicator.name.includes(indicatorsSearchValue)
+      );
+
+      setIndicatorsSearchResultsArray(result);
+    } else {
+      setIndicatorsSearchResultsArray([]);
+    }
+  };
+
+  const handleChangeInputValue = (indicatorName: string) => {
+    setIndicatorsSearchValue(indicatorName);
+
+    const result = viewModel.indicatorsSummary.indicatorsArray.filter(
+      (indicator) => indicator.name.includes(indicatorsSearchValue)
+    );
+
+    setIndicatorsSearchResultsArray(result);
+  };
+
   if (viewModel.indicatorsSummary.thisMonth) {
     return (
       <div className="w-full max-w-[506px]">
         <div className="flex justify-between items-center mb-4">
           <p className="font-poppins text-[16px] text-[#312843]">Indicadores</p>
-          <button className="font-poppins text-[16px] font-bold text-[#FDFDFD] bg-[#952323] px-4 py-[6px] rounded-lg flex justify-between items-center gap-2">
+          <button
+            onClick={() => setModalFlag(true)}
+            className="font-poppins text-[16px] font-bold text-[#FDFDFD] bg-[#952323] px-4 py-[6px] rounded-lg flex justify-between items-center gap-2"
+          >
             <img src={plusIcon} alt="" />
-            <span onClick={() => setModalFlag(true)}>Atribuir Indicador</span>
+            <span>Atribuir Indicador</span>
           </button>
         </div>
         <div>
@@ -29,11 +65,13 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
             (indicatorCard, index) => {
               return (
                 <IndicatorCard
+                  key={index}
                   number={index + 1}
                   thisMonth={viewModel.indicatorsSummary.thisMonth}
                   name={indicatorCard.name}
                   weight={indicatorCard.weight}
                   progress={indicatorCard.progress}
+                  unit={indicatorCard.unit}
                   goal={indicatorCard.goal}
                   superGoal={indicatorCard.superGoal}
                   challenge={indicatorCard.challenge}
@@ -97,7 +135,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                 <div className="flex flex-col items-center justify-center gap-8 w-full">
                   <div className="flex flex-col gap-3">
                     <label
-                      htmlFor="IndicatorName"
+                      htmlFor="indicatorName"
                       className="overflow-hidden rounded-[10px] border border-[#A3A3A3] px-3 pt-1 pb-2 shadow-none w-full"
                     >
                       <span className="font-poppins text-[14px] text-[#A3A3A3]">
@@ -105,13 +143,13 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                       </span>
                       <input
                         type="text"
-                        id="IndicatorName"
+                        id="indicatorName"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
                       />
                     </label>
                     <label
-                      htmlFor="IndicatorWeight"
+                      htmlFor="indicatorWeight"
                       className="overflow-hidden rounded-[10px] border border-[#A3A3A3] px-3 pt-1 pb-2 shadow-none w-full"
                     >
                       <span className="font-poppins text-[14px] text-[#A3A3A3]">
@@ -119,28 +157,91 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                       </span>
                       <input
                         type="text"
-                        id="IndicatorWeight"
+                        id="indicatorWeight"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
                       />
                     </label>
                     <label
-                      htmlFor="IndicatorWeight"
-                      className="overflow-hidden rounded-[10px] border border-[#A3A3A3] px-3 pt-1 pb-2 shadow-none w-full"
+                      htmlFor="indicatorUnit"
+                      className={`overflow-hidden rounded-[10px] border border-[#A3A3A3] px-3 py-2.5 shadow-none w-full  ${
+                        unitOptionsFlag
+                          ? "max-h-[144px]"
+                          : unit === ""
+                          ? "max-h-[42px]"
+                          : "max-h-[68px]"
+                      } transition-all duration-300`}
                     >
-                      <span className="font-poppins text-[14px] text-[#A3A3A3]">
-                        Unidade de medida
-                      </span>
+                      <div
+                        onClick={() => setUnitOptionsFlag(!unitOptionsFlag)}
+                        className="flex justify-between items-center pr-2 cursor-pointer"
+                      >
+                        <span className="font-poppins text-[14px] text-[#A3A3A3]">
+                          Unidade de medida
+                        </span>
+                        <img
+                          className={`${
+                            unitOptionsFlag ? "" : "rotate-180"
+                          } transition-all duration-300`}
+                          src={expandSelectIcon}
+                          alt=""
+                        />
+                      </div>
                       <input
                         type="text"
-                        id="IndicatorWeight"
-                        placeholder=""
-                        className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                        id="indicatorUnit"
+                        className={`${
+                          unitOptionsFlag
+                            ? "hidden"
+                            : unit === ""
+                            ? "hidden"
+                            : ""
+                        } mb-2 select-none caret-transparent disabled w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]`}
+                        value={unit}
                       />
+                      <ul
+                        className={`flex flex-col gap-1 ${
+                          unit === "" ? "mt-4" : unitOptionsFlag ? "mt-4" : ""
+                        } font-poppins text-[16px] text-[#312843] transition-all duration-300`}
+                      >
+                        <li
+                          className={`cursor-pointer ${
+                            unit == "Número" ? "font-bold" : ""
+                          }`}
+                          onClick={() => {
+                            setUnit("Número");
+                            setUnitOptionsFlag(!unitOptionsFlag);
+                          }}
+                        >
+                          Número
+                        </li>
+                        <li
+                          className={`cursor-pointer ${
+                            unit == "Financeiro" ? "font-bold" : ""
+                          }`}
+                          onClick={() => {
+                            setUnit("Financeiro");
+                            setUnitOptionsFlag(!unitOptionsFlag);
+                          }}
+                        >
+                          Financeiro
+                        </li>
+                        <li
+                          className={`cursor-pointer ${
+                            unit == "Percentual" ? "font-bold" : ""
+                          }`}
+                          onClick={() => {
+                            setUnit("Percentual");
+                            setUnitOptionsFlag(!unitOptionsFlag);
+                          }}
+                        >
+                          Percentual
+                        </li>
+                      </ul>
                     </label>
 
                     <label
-                      htmlFor="IndicatorGoal"
+                      htmlFor="indicatorGoal"
                       className="overflow-hidden rounded-[10px] border border-[#A3A3A3] px-3 pt-1 pb-2 shadow-none w-full"
                     >
                       <span className="font-poppins text-[14px] text-[#A3A3A3]">
@@ -148,14 +249,14 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                       </span>
                       <input
                         type="text"
-                        id="IndicatorGoal"
+                        id="indicatorGoal"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
                       />
                     </label>
 
                     <label
-                      htmlFor="IndicatorSupergoal"
+                      htmlFor="indicatorSupergoal"
                       className="overflow-hidden rounded-[10px] border border-[#A3A3A3] px-3 pt-1 pb-2 shadow-none w-full"
                     >
                       <span className="font-poppins text-[14px] text-[#A3A3A3]">
@@ -163,14 +264,14 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                       </span>
                       <input
                         type="text"
-                        id="IndicatorSupergoal"
+                        id="indicatorSupergoal"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
                       />
                     </label>
 
                     <label
-                      htmlFor="IndicatorChallenge"
+                      htmlFor="indicatorChallenge"
                       className="overflow-hidden rounded-[10px] border border-[#A3A3A3] px-3 pt-1 pb-2 shadow-none w-full"
                     >
                       <span className="font-poppins text-[14px] text-[#A3A3A3]">
@@ -178,7 +279,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                       </span>
                       <input
                         type="text"
-                        id="IndicatorChallenge"
+                        id="indicatorChallenge"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
                       />
@@ -193,7 +294,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
               {indicatorModalStep == 2 && (
                 <div className="flex flex-col items-center justify-center gap-8 w-full">
                   <label
-                    htmlFor="IndicatorName"
+                    htmlFor="indicatorName"
                     className="overflow-hidden rounded-[10px] border border-[#A3A3A3] px-3 pt-1 pb-2 shadow-none w-full"
                   >
                     <span className="font-poppins text-[14px] text-[#A3A3A3]">
@@ -201,10 +302,29 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                     </span>
                     <input
                       type="text"
-                      id="IndicatorName"
-                      placeholder=""
+                      id="indicatorName"
+                      onKeyUp={(e) => handleSearchIndicators(e)}
+                      onInput={(e) => handleSearchIndicators(e)}
+                      onKeyDown={(e) => handleSearchIndicators(e)}
+                      onMouseMove={(e) => handleSearchIndicators(e)}
+                      value={indicatorsSearchValue}
                       className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
                     />
+                    <ul className="font-poppins text-[16px] text-[#7c7c7c] [&>*:first-child]:mt-2 [&>*:first-child]:border-t-2 [&>*:first-child]:pt-2 flex flex-col gap-1">
+                      {indicatorsSearchResultsArray.map((indicator, index) => {
+                        return (
+                          <li
+                            className="hover:text-[#312843] cursor-pointer"
+                            onClick={() =>
+                              handleChangeInputValue(indicator.name)
+                            }
+                            key={index}
+                          >
+                            {indicator.name}
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </label>
                   <button className="w-full max-w-[352px] min-h-[60px] bg-[#952323] rounded-[10px] text-white font-poppins text-[16px] font-semibold">
                     Concluir
@@ -281,6 +401,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                   name={indicatorCard.name}
                   weight={indicatorCard.weight}
                   progress={indicatorCard.progress}
+                  unit={indicatorCard.unit}
                   goal={indicatorCard.goal}
                   superGoal={indicatorCard.superGoal}
                   challenge={indicatorCard.challenge}

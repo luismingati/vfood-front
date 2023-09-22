@@ -2,6 +2,7 @@ interface IndicatorCard {
   name: string;
   weight: number;
   progress: number;
+  unit: string,
   goal: number;
   superGoal: number;
   challenge: number;
