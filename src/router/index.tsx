@@ -1,7 +1,7 @@
 import {Routes, BrowserRouter, Route } from 'react-router-dom'
 import Home from '../pages/home'
 import Colaborators from '../pages/colaborators'
-import Layout from '../components/Layout/layout'
+import Layout from '../components/Layout/Layout'
 
 export function Router() {
 
