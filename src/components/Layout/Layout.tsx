@@ -4,7 +4,7 @@ import Home from "./homeSVG";
 import settings from '../../assets/settings.svg'
 import logout from '../../assets/logout.svg'
 
-const Layout = () => {
+const Layout: React.FC = () => {
   return (
     <div className="bg-[#952323] w-screen h-screen py-16 pr-[60px]">
       <div className="flex h-full ">
