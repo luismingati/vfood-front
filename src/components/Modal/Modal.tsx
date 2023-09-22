@@ -1,26 +1,14 @@
 import close from '../../assets/close.svg'
-
-type ModalProps = {
-  title: string;
-  children: React.ReactNode;
-  isOpen: boolean;
-  onClose: () => void;
-};
+import { ModalProps } from './ModalModel';
+import { useModal } from './ModalViewModel';
 
 const Modal: React.FC<ModalProps> = ({ title, children,  isOpen, onClose }) => {
+  
+  const { handleCloseModal, handleOverlayClick } = useModal(onClose);
+
   if (!isOpen) {
     return null;
   }
-
-  const handleCloseModal = () => {
-    onClose();
- };
- 
- const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget) {
-       onClose();
-    }
- };
 
   return (
     <div className="w-screen h-screen absolute top-0 left-0 flex items-center justify-center bg-[#00000040]" onClick={handleOverlayClick}>

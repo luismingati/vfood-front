@@ -1,7 +1,8 @@
-import CardHighlight, { GoalsTypes } from "../CardHighlight/CardHighlight";
+import CardHighlight from "../CardHighlight/CardHighlight";
+import {GoalsTypes} from "../CardHighlight/CardHighlightModel";
 import { MonthHighlightModel } from "./MonthHighlightModel";
 
-const MonthHighlight = (props: MonthHighlightModel) => {
+const MonthHighlight: React.FC<MonthHighlightModel> = (props: MonthHighlightModel) => {
 
     return(
         <div className="px-[18px] py-6 border-[1px] w-full max-w-[390px] h-[340px] rounded-[10px] border-[#D9D9D9] font-poppins">
