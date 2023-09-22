@@ -41,7 +41,9 @@ const IndicatorCard = (props: IndicatorCardModel) => {
           </span>
         </div>
         <div
-          className={`flex justify-center items-center min-w-[48px] max-w-[48px] min-h-[48px] max-h-[48px] bg-[${progressColor}] rounded-[50%]`}
+          className={`flex justify-center items-center min-w-[48px] max-w-[48px] min-h-[48px] max-h-[48px] ${
+            progressNow !== 999 ? `bg-[${progressColor}]` : "bg-[#D9D9D9]"
+          } rounded-[50%]`}
         >
           <p
             className={`pt-[1px] font-poppins text-[20px] font-bold ${
