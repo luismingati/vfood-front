@@ -1,9 +1,11 @@
 import ColaboratorCard from "./components/ColaboratorCard/ColaboratorCard";
+import Searchbar from "./components/Searchbar/Searchbar";
 
 export function App() {
   return (
     <>
-      <ColaboratorCard name={"Alice Martins"} role={"Manager"} stars={3.5}/>
+      <Searchbar/>
+      {/* <ColaboratorCard name={"Alice Martins"} role={"Manager"} stars={3.5}/> */}
     </>
   )
 }
