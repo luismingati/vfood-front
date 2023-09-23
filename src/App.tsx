@@ -1,12 +1,9 @@
-import MonthHighlight from "./components/MonthHighlight/MonthHighlight";
+import { Router } from "./router";
 
 export function App() {
-  
-  return (
-    <>
-      <MonthHighlight month={"Janeiro"} />
-    </>
-  )
+    return (
+        <>
+            <Router />
+        </>
+    )
 }
-
-
