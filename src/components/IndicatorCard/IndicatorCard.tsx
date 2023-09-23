@@ -13,7 +13,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
   const [editIndicatorModalFlag, setEditIndicatorModalFlag] = useState(false);
   const [editResultsModalFlag, setEditResultsModalFlag] = useState(false);
   const [unitOptionsFlag, setUnitOptionsFlag] = useState(false);
-  const [unit, setUnit] = useState("");
+  const [unit, setUnit] = useState(viewModel.card.unit);
 
   const [progressNow, setProgressNow] = useState(999);
   const [progressColor, setProgressColor] = useState("#D9D9D9");
@@ -35,6 +35,24 @@ const IndicatorCard = (props: IndicatorCardModel) => {
       }
     }
   }, [viewModel, progressNow, progressColor]);
+
+  const handleEditIndicator = () => {
+    // Função que atualiza as informações do indicador
+    // 1. Pegar o valor de todos os inputs
+    // 2. Criar um indicador auxiliar com os valores dos inputs
+    // 3. Trocar o indicador desatualizado pelo indicador auxiliar
+  };
+
+  const handleEditIndicatorResult = () => {
+    // Função que atualiza o progresso do colaborador no indicador
+    const input = document.querySelector(
+      "#indicatorNewProgress"
+    ) as HTMLInputElement;
+
+    if (input) {
+      // Coloar o input.value no progresso do indicador do colaborador
+    }
+  };
 
   return (
     <div className="bg-[#f5f5f56b] rounded-[20px] p-6 mb-3">
@@ -224,11 +242,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                   />
                   <ul
                     className={`flex flex-col gap-1 ${
-                      unit === ""
-                        ? "mt-4"
-                        : unitOptionsFlag
-                        ? "mt-4"
-                        : ""
+                      unit === "" ? "mt-4" : unitOptionsFlag ? "mt-4" : ""
                     } font-poppins text-[16px] text-[#312843] transition-all duration-300`}
                   >
                     <li
@@ -312,7 +326,10 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                   />
                 </label>
               </div>
-              <button className="w-full max-w-[352px] min-h-[60px] bg-[#952323] rounded-[10px] text-white font-poppins text-[16px] font-semibold">
+              <button
+                onClick={handleEditIndicator}
+                className="w-full max-w-[352px] min-h-[60px] bg-[#952323] rounded-[10px] text-white font-poppins text-[16px] font-semibold"
+              >
                 Concluir
               </button>
             </div>
@@ -339,7 +356,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
             <div className="flex flex-col items-center justify-center gap-8 w-full">
               <div className="flex flex-col gap-3 w-full">
                 <label
-                  htmlFor="indicatorWeight"
+                  htmlFor="indicatorNewProgress"
                   className="overflow-hidden rounded-[10px] border border-[#A3A3A3] px-3 pt-1 pb-2 shadow-none w-full"
                 >
                   <span className="font-poppins text-[14px] text-[#A3A3A3]">
@@ -347,14 +364,17 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                   </span>
                   <input
                     type="text"
-                    id="indicatorWeight"
+                    id="indicatorNewProgress"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={viewModel.card.progress}
+                    defaultValue={viewModel.card.progress}
                   />
                 </label>
               </div>
-              <button className="w-full max-w-[352px] min-h-[60px] bg-[#952323] rounded-[10px] text-white font-poppins text-[16px] font-semibold">
+              <button
+                onClick={handleEditIndicatorResult}
+                className="w-full max-w-[352px] min-h-[60px] bg-[#952323] rounded-[10px] text-white font-poppins text-[16px] font-semibold"
+              >
                 Concluir
               </button>
             </div>

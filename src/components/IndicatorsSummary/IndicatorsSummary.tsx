@@ -39,12 +39,19 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
 
   const handleChangeInputValue = (indicatorName: string) => {
     setIndicatorsSearchValue(indicatorName);
+    setIndicatorsSearchResultsArray([]);
+  };
 
-    const result = viewModel.indicatorsSummary.indicatorsArray.filter(
-      (indicator) => indicator.name.includes(indicatorsSearchValue)
-    );
-
-    setIndicatorsSearchResultsArray(result);
+  const handleSaveNewIndicator = () => {
+    // Função de concluir criação do novo indicador e adicionar o novo indicador ao colaborador
+    // 1. Adicionar o novo indicador no DB de indicadores
+    // 2. Adicionar o indicador na lista de indicadores do colaborador
+    // 3. Atualizar o front para aparecer o novo indicador na lista
+  };
+  const handleAttachIndicator = () => {
+    // Função de adicionar indicador existente ao colaborador
+    // 1. Adicionar o indicador na lista de indicadores do colaborador
+    // 2. Atualizar o front para aparecer o novo indicador na lista
   };
 
   if (viewModel.indicatorsSummary.thisMonth) {
@@ -285,7 +292,10 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                       />
                     </label>
                   </div>
-                  <button className="w-full max-w-[352px] min-h-[60px] bg-[#952323] rounded-[10px] text-white font-poppins text-[16px] font-semibold">
+                  <button
+                    onClick={handleSaveNewIndicator}
+                    className="w-full max-w-[352px] min-h-[60px] bg-[#952323] rounded-[10px] text-white font-poppins text-[16px] font-semibold"
+                  >
                     Concluir
                   </button>
                 </div>
@@ -326,7 +336,10 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                       })}
                     </ul>
                   </label>
-                  <button className="w-full max-w-[352px] min-h-[60px] bg-[#952323] rounded-[10px] text-white font-poppins text-[16px] font-semibold">
+                  <button
+                    onClick={handleAttachIndicator}
+                    className="w-full max-w-[352px] min-h-[60px] bg-[#952323] rounded-[10px] text-white font-poppins text-[16px] font-semibold"
+                  >
                     Concluir
                   </button>
                 </div>
