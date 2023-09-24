@@ -38,7 +38,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
 
   if (indicatorsSummary.thisMonth) {
     return (
-      <div className="w-full max-w-[506px]">
+      <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3">
         <div className="flex justify-between items-center mb-4">
           <p className="font-poppins text-[16px] text-[#312843]">Indicadores</p>
           <button
@@ -331,7 +331,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
     );
   } else {
     return (
-      <div className="w-full max-w-[506px]">
+      <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3">
         <div className="flex justify-between items-center mb-4">
           <p className="font-poppins text-[16px] text-[#312843]">Indicadores</p>
           <button className="font-poppins text-[16px] font-bold text-[#FDFDFD] bg-[#A3A3A3] px-4 py-[6px] rounded-lg flex justify-between items-center gap-2 pointer-events-none">

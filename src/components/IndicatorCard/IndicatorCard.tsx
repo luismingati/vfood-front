@@ -23,7 +23,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
   } = useIndicatorCardViewModel(props);
 
   return (
-    <div className="bg-[#f5f5f56b] rounded-[20px] p-6 mb-3">
+    <div className="bg-[#f5f5f56b] rounded-[20px] p-6">
       <div className="flex justify-between items-center gap-3 mb-8">
         <div>
           <div className="flex gap-2.5">
