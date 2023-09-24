@@ -1,3 +1,4 @@
+import { Router } from "./router";
 import IndicatorsSummary from "./components/IndicatorsSummary/IndicatorsSummary";
 
 const indicatorsArray = [
@@ -44,8 +45,9 @@ const indicatorsArray = [
 
 export function App() {
   return (
-    <div className="p-4">
+    <>
       <IndicatorsSummary thisMonth={true} indicatorsArray={indicatorsArray} />
-    </div>
+      <Router />
+    </>
   );
 }
