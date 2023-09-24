@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import useIndicatorCardViewModel from "./IndicatorCardViewModel";
 
 import checkIcon from "./assets/checkIcon.svg";
@@ -8,51 +6,21 @@ import closeIcon from "./assets/closeIcon.svg";
 import expandSelectIcon from "./assets/expandSelectIcon.svg";
 
 const IndicatorCard = (props: IndicatorCardModel) => {
-  const viewModel = useIndicatorCardViewModel(props);
-
-  const [editIndicatorModalFlag, setEditIndicatorModalFlag] = useState(false);
-  const [editResultsModalFlag, setEditResultsModalFlag] = useState(false);
-  const [unitOptionsFlag, setUnitOptionsFlag] = useState(false);
-  const [unit, setUnit] = useState(viewModel.card.unit);
-
-  const [progressNow, setProgressNow] = useState(999);
-  const [progressColor, setProgressColor] = useState("#D9D9D9");
-
-  useEffect(() => {
-    if (!viewModel.card.thisMonth) {
-      if (viewModel.card.progress < viewModel.card.goal) {
-        setProgressNow(0);
-        setProgressColor("#F16062");
-      } else if (viewModel.card.progress < viewModel.card.superGoal) {
-        setProgressNow(1);
-        setProgressColor("#AC72C1");
-      } else if (viewModel.card.progress < viewModel.card.challenge) {
-        setProgressNow(2);
-        setProgressColor("#32B97C");
-      } else {
-        setProgressNow(3);
-        setProgressColor("#6186D3");
-      }
-    }
-  }, [viewModel, progressNow, progressColor]);
-
-  const handleEditIndicator = () => {
-    // Função que atualiza as informações do indicador
-    // 1. Pegar o valor de todos os inputs
-    // 2. Criar um indicador auxiliar com os valores dos inputs
-    // 3. Trocar o indicador desatualizado pelo indicador auxiliar
-  };
-
-  const handleEditIndicatorResult = () => {
-    // Função que atualiza o progresso do colaborador no indicador
-    const input = document.querySelector(
-      "#indicatorNewProgress"
-    ) as HTMLInputElement;
-
-    if (input) {
-      // Coloar o input.value no progresso do indicador do colaborador
-    }
-  };
+  const {
+    indicatorCard,
+    editIndicatorModalFlag,
+    changeEditIndicatorModalFlag,
+    editResultsModalFlag,
+    changeEditResultsModalFlag,
+    unitOptionsFlag,
+    changeUnitOptionsFlag,
+    unit,
+    changeUnit,
+    handleEditIndicator,
+    handleEditIndicatorResult,
+    progressNow,
+    progressColor,
+  } = useIndicatorCardViewModel(props);
 
   return (
     <div className="bg-[#f5f5f56b] rounded-[20px] p-6 mb-3">
@@ -60,32 +28,32 @@ const IndicatorCard = (props: IndicatorCardModel) => {
         <div>
           <div className="flex gap-2.5">
             <p className="font-poppins text-[16px] text-[#312843]">
-              {viewModel.card.thisMonth ? "" : `#${viewModel.card.number} `}
-              {viewModel.card.name}
+              {indicatorCard.thisMonth ? "" : `#${indicatorCard.number} `}
+              {indicatorCard.name}
             </p>
             <img
-              onClick={() => setEditIndicatorModalFlag(true)}
+              onClick={() => changeEditIndicatorModalFlag()}
               className="cursor-pointer"
               src={editIcon}
               alt=""
             />
           </div>
           <span className="font-poppins text-[14px] text-[#A3A3A3]">
-            Peso: {viewModel.card.weight}
+            Peso: {indicatorCard.weight}
           </span>
         </div>
         <div
           className={`flex justify-center items-center min-w-[48px] max-w-[48px] min-h-[48px] max-h-[48px] ${
             progressNow !== 999 ? `bg-[${progressColor}]` : "bg-[#D9D9D9]"
           } rounded-[50%] cursor-pointer`}
-          onClick={() => setEditResultsModalFlag(true)}
+          onClick={() => changeEditResultsModalFlag()}
         >
           <p
             className={`pt-[1px] font-poppins text-[20px] font-bold ${
               progressNow !== 999 ? "text-white" : "text-[#312843]"
             }`}
           >
-            {viewModel.card.progress}
+            {indicatorCard.progress}
           </p>
         </div>
       </div>
@@ -102,12 +70,12 @@ const IndicatorCard = (props: IndicatorCardModel) => {
             >
               <img src={checkIcon} alt="" />
               <p className="font-poppins text-[20px] font-bold text-white translate-y-[1.3px]">
-                {viewModel.card.goal}
+                {indicatorCard.goal}
               </p>
             </div>
           ) : (
             <p className="font-poppins text-[20px] font-bold text-[#312843]">
-              {viewModel.card.goal}
+              {indicatorCard.goal}
             </p>
           )}
         </div>
@@ -125,12 +93,12 @@ const IndicatorCard = (props: IndicatorCardModel) => {
             >
               <img src={checkIcon} alt="" />
               <p className="font-poppins text-[20px] font-bold text-white translate-y-[1.3px]">
-                {viewModel.card.superGoal}
+                {indicatorCard.superGoal}
               </p>
             </div>
           ) : (
             <p className="font-poppins text-[20px] font-bold text-[#312843]">
-              {viewModel.card.superGoal}
+              {indicatorCard.superGoal}
             </p>
           )}
         </div>
@@ -148,12 +116,12 @@ const IndicatorCard = (props: IndicatorCardModel) => {
             >
               <img src={checkIcon} alt="" />
               <p className="font-poppins text-[20px] font-bold text-white translate-y-[1.3px]">
-                {viewModel.card.challenge}
+                {indicatorCard.challenge}
               </p>
             </div>
           ) : (
             <p className="font-poppins text-[20px] font-bold text-[#312843]">
-              {viewModel.card.challenge}
+              {indicatorCard.challenge}
             </p>
           )}
         </div>
@@ -169,7 +137,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
               <img
                 className="absolute right-4 cursor-pointer"
                 onClick={() => {
-                  setEditIndicatorModalFlag(false);
+                  changeEditIndicatorModalFlag();
                 }}
                 src={closeIcon}
                 alt=""
@@ -189,7 +157,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorName"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={viewModel.card.name}
+                    value={indicatorCard.name}
                   />
                 </label>
                 <label
@@ -204,7 +172,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorWeight"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={viewModel.card.weight}
+                    value={indicatorCard.weight}
                   />
                 </label>
                 <label
@@ -218,7 +186,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                   } transition-all duration-300`}
                 >
                   <div
-                    onClick={() => setUnitOptionsFlag(!unitOptionsFlag)}
+                    onClick={() => changeUnitOptionsFlag()}
                     className="flex justify-between items-center pr-2 cursor-pointer"
                   >
                     <span className="font-poppins text-[14px] text-[#A3A3A3]">
@@ -250,8 +218,8 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                         unit == "Número" ? "font-bold" : ""
                       }`}
                       onClick={() => {
-                        setUnit("Número");
-                        setUnitOptionsFlag(!unitOptionsFlag);
+                        changeUnit("Número");
+                        changeUnitOptionsFlag();
                       }}
                     >
                       Número
@@ -261,8 +229,8 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                         unit == "Financeiro" ? "font-bold" : ""
                       }`}
                       onClick={() => {
-                        setUnit("Financeiro");
-                        setUnitOptionsFlag(!unitOptionsFlag);
+                        changeUnit("Financeiro");
+                        changeUnitOptionsFlag();
                       }}
                     >
                       Financeiro
@@ -272,8 +240,8 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                         unit == "Percentual" ? "font-bold" : ""
                       }`}
                       onClick={() => {
-                        setUnit("Percentual");
-                        setUnitOptionsFlag(!unitOptionsFlag);
+                        changeUnit("Percentual");
+                        changeUnitOptionsFlag();
                       }}
                     >
                       Percentual
@@ -292,7 +260,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorGoal"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={viewModel.card.goal}
+                    value={indicatorCard.goal}
                   />
                 </label>
                 <label
@@ -307,7 +275,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorSupergoal"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={viewModel.card.superGoal}
+                    value={indicatorCard.superGoal}
                   />
                 </label>
                 <label
@@ -322,7 +290,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorChallenge"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={viewModel.card.challenge}
+                    value={indicatorCard.challenge}
                   />
                 </label>
               </div>
@@ -347,7 +315,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
               <img
                 className="absolute right-4 cursor-pointer"
                 onClick={() => {
-                  setEditResultsModalFlag(false);
+                  changeEditResultsModalFlag();
                 }}
                 src={closeIcon}
                 alt=""
@@ -367,7 +335,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorNewProgress"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    defaultValue={viewModel.card.progress}
+                    defaultValue={indicatorCard.progress}
                   />
                 </label>
               </div>
