@@ -9,6 +9,11 @@ export default {
       fontFamily: {
         poppins: ["'Poppins'", "sans-serif"],
         openSans: ["'Open Sans'", "sans-serif"],
+      },
+      colors: {
+        searchbarBlue: "#312843",
+        red : "#FF0000",
+        searchbarcolor: "#FBFBFB",
       }
     },
   },
