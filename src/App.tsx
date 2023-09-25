@@ -1,9 +1,9 @@
-import ColaboratorCard from "./components/ColaboratorCard/ColaboratorCard";
+import ColaboratorHeader from "./components/ColaboratorHeader/ColaboratorHeader";
 
 export function App() {
   return (
     <>
-      <ColaboratorCard name={"Alice Martins"} role={"Manager"} stars={3.5}/>
+      <ColaboratorHeader name={"Alice Martins"} role={"Manager"} stars={4.5}/>
     </>
   )
 }
