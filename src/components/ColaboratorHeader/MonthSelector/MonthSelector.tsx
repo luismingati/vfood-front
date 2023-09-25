@@ -6,7 +6,7 @@ const MonthSelector: React.FC<MonthSelectorModel> = ({ onMonthChange }) => {
   const viewModel = useMonthSelectorViewModel({ onMonthChange });
 
   return (
-    <div className="flex flex-row items-center justify-center gap-[19px] h-[40px] border-[2px] border-[#A3A3A3] rounded-[10px]">
+    <div className="flex flex-row items-center justify-center gap-[19px] px-2.5 py-1.5 border-[1px] border-[#D9D9D9] rounded-[10px]">
       <button
         onClick={viewModel.goToPreviousMonth}
         className="h-[24px]"

@@ -11,7 +11,6 @@ const useMonthSelectorViewModel = (model: MonthSelectorModel) => {
     const goToNextMonth = () => {
         const nextMonth = new Date(selectedMonth);
         nextMonth.setMonth(selectedMonth.getMonth() + 1);
-        console.log(nextMonth);
         if (nextMonth <= new Date()) {
         setSelectedMonth(nextMonth);
         model.onMonthChange(nextMonth);
@@ -26,7 +25,7 @@ const useMonthSelectorViewModel = (model: MonthSelectorModel) => {
     };
 
     const shouldDisableNextMonth = () => {
-        return selectedMonth.getMonth() === new Date().getMonth() && selectedMonth.getFullYear === new Date().getFullYear
+        return ((selectedMonth.getMonth() === new Date().getMonth()) && (selectedMonth.getFullYear() === new Date().getFullYear()))
     }
 
     return {
