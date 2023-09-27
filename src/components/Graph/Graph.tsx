@@ -10,18 +10,8 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-  Title,
-  Tooltip,
-  Legend,
 } from "chart.js";
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement);
 
 const Graph: React.FC<GraphModel> = (props: GraphModel) => {
   const { graph, labels } = useGraphViewModel(props);
