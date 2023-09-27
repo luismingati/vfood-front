@@ -1,9 +1,9 @@
 import useSearchbarViewModel from "./SearchbarViewModel";
 const Searchbar = (props:SearchforColaboratorModel) => {
-    const viewModel = useSearchbarViewModel(props)
+    const viewModel = useSearchbarViewModel(props);
     return(
     <>
-        <div className="flex w-full justify-center">
+        <div className="flex w-full justify-center font-poppins">
             <div className="w-full flex pl-7 rounded-xl gap-2.5 h-12 bg-searchbarcolor">
                 <div className="mt-3.5">
                     <svg className="w-6 h-6 text-searchbarBlue" fill="none">

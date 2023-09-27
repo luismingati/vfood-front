@@ -10,7 +10,7 @@ export function Router() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/colaborators" element={<Colaborators />} />
+          <Route path="/colaborators" element={<Colaborators/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
