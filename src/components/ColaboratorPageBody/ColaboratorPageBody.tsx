@@ -45,10 +45,6 @@ const stars = () => {
                 <div className="text-[#312843] text-[18px] flex flex-row mt-[4px]">{
                     stars()
                 }</div>}
-                {/* <p className="text-[#312843] text-[18px]">{alfabeto[viewModel.card.contador]}</p> */}
-                {/* <div className="text-[#312843] text-[18px] flex flex-row mt-[4px]">{
-                    stars()
-                }</div> */}
             <div className=" w-[88.7%] h-[2px] bg-[#D9D9D9] mt-[12.5px]"></div>
             </div>
             <div className="flex">
@@ -63,12 +59,7 @@ const stars = () => {
                                 else{
                                     if((card.stars || 0) <= viewModel.card.contador && (card.stars || 0) > viewModel.card.contador - 1) return (<ColaboratorCard name={card.name} role={card.role} stars={card.stars}/>)
                                     return null
-
                                 }
-                            
-                            // return (<ColaboratorCard name={card.name} role={card.role} stars={card.stars}/>)
-                            // {if(card.name[0].toLowerCase() != alfabeto[viewModel.card.contador].toLowerCase()) return null}
-                            // return (<ColaboratorCard name={card.name} role={card.role} stars={card.stars}/>)
                         }
                         }
                         )}

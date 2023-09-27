@@ -140,7 +140,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
     for (let index = 5; index > 0 && contador != colaboratorsArray.length; index--){
       let states : number = 0;
       achei = false;
-      if(((colaboratorsArray[contador].stars || 0) <= index) && ((colaboratorsArray[contador].stars || 0) > index - 1) && (repetido == false)){
+      if(((colaboratorsArray[contador].stars || 0) <= index) && ((colaboratorsArray[contador].stars || 0) > index - 1) && (repetido == false) && dataFilter.includes(colaboratorsArray[contador])){
         elements.push(
           <ColaboratorPageBody contador={index} ColaboratorArray={dataFilter}/>
         );
@@ -155,10 +155,19 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
         continue;
       }
       if(colaboratorsArray[contador + 1] != undefined){
-        if((colaboratorsArray[contador+1].stars || 0) <= index && (colaboratorsArray[contador+1].stars || 0) > index - 1 && dataFilter.includes(colaboratorsArray[contador])){
-          console.log(colaboratorsArray[contador].name);
-          repetido = true;
-          index++;
+        if((colaboratorsArray[contador+1].stars || 0) <= index && (colaboratorsArray[contador+1].stars || 0) > index - 1){
+          if(dataFilter.includes(colaboratorsArray[contador])){
+            repetido = true;
+            index++;
+          }
+          else if(!dataFilter.includes(colaboratorsArray[contador + 1])){
+            repetido = false;
+            index++;
+          }
+          else if(dataFilter.includes(colaboratorsArray[contador + 1])){
+            repetido = false;
+            index++;
+          }
         }
         else{
           repetido = false;
@@ -174,7 +183,6 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
     let contador : number = 0;
     let achei : boolean = false;
     let repetido : boolean = false;
-    console.log(colaboratorsArray, dataFilter);
     for (let index = 65; index < 91 && contador != colaboratorsArray.length; index++) {
       let states : number = 0;
       achei = false;
