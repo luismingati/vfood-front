@@ -2,7 +2,7 @@ import NoteCard from "../NoteCard/NoteCard";
 
 const HeaderCard = (props:ColaboratorCardModel) => {
     return(
-        <div className="flex flex-row items-end gap-[18px] w-[488px]">
+        <div className="flex flex-row items-end gap-[18px] w-[506px]">
             <div className="pb-[10px]"><img src={props.avatar ? props.avatar : "./avatar.png"} alt="avatar" className="w-[48px] h-[48px] rounded-full"/></div>
             <div className="flex flex-col flex-grow">
                 <p className="font-poppins text-[16px] text-[#A3A3A3] font-regular">{props.role}</p>

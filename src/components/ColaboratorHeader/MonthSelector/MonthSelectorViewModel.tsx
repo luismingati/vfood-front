@@ -5,7 +5,7 @@ const useMonthSelectorViewModel = (model: MonthSelectorModel) => {
     const [selectedMonth, setSelectedMonth] = useState(new Date());
 
     useEffect(() => {
-        
+
     }, [])
 
     const goToNextMonth = () => {

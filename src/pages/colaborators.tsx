@@ -251,7 +251,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
     return elements;
   };
   return (
-    <div className="flex flex-1 h-full w-full bg-white py-9 px-12 flex-col rounded-[20px] overflow-y-scroll">
+    <div className="flex flex-1 h-full w-full bg-white py-9 px-12 flex-col rounded-[20px] overflow-y-scroll no-scrollbar">
       <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
       <ColaboratorPageHeader onclick={handleButtonClick} />
       {value == "Ranking" ? rankingOrder({}) : alphabeticalOrder({})}

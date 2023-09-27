@@ -19,7 +19,7 @@ const Graph: React.FC<GraphModel> = (props: GraphModel) => {
   return (
     <div
       className={`w-full ${
-        graph.fullWidth ? "" : "max-w-[623px]"
+        graph.fullWidth ? "" : "max-w-[70%]"
       } h-fit border-[1px] border-solid border-[#D9D9D9] py-6 px-7 rounded-[10px]`}
     >
       <div className="flex justify-between items-center mb-5">

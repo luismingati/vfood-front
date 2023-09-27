@@ -38,7 +38,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
 
   if (indicatorsSummary.indicatorsArray.length == 0) {
     return (
-      <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto">
+      <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto no-scrollbar">
         <div className="flex justify-between items-center mb-4">
           <p className="font-poppins text-[16px] text-[#312843]">Indicadores</p>
         </div>
@@ -320,7 +320,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
   } else {
     if (indicatorsSummary.thisMonth) {
       return (
-        <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3">
+        <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto  no-scrollbar [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3">
           <div className="flex justify-between items-center mb-4">
             <p className="font-poppins text-[16px] text-[#312843]">
               Indicadores
@@ -617,7 +617,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
       );
     } else {
       return (
-        <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3">
+        <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto no-scrollbar [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3">
           <div className="flex justify-between items-center mb-4">
             <p className="font-poppins text-[16px] text-[#312843]">
               Indicadores
