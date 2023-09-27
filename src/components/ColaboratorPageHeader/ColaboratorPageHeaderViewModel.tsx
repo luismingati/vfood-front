@@ -4,6 +4,8 @@ export const useColaboratorPageHeaderViewModel = (model : ColaboratorPageHeaderP
     const [modalIsOpen2, setIsOpen2] = useState(false);
     const [buttonColor1, setButtonColor1] = useState('bg-[#FDFDFD]')
     const [buttonColor2, setButtonColor2] = useState('bg-[#FDFDFD]')
+    const [name, setName] = useState<string>((model.name || ''));
+    const [role, setRole] = useState<string>((model.role || ''));
     const openModal1 = () => {
         setIsOpen1(true);
     };
@@ -24,6 +26,16 @@ export const useColaboratorPageHeaderViewModel = (model : ColaboratorPageHeaderP
         setButtonColor1('bg-[#FDFDFD]');
         setButtonColor2('bg-[#95232340]');
     };
+    const concluir = () => {
+        closeModal1();
+        setName('');
+        setRole('');
+    }
+    const aplicar = (parametro : string) => {
+        const abacate = document.getElementById(parametro) as HTMLButtonElement;
+        model.onclick(abacate.value);
+        closeModal2();
+    }
     return { modalIsOpen1, modalIsOpen2, openModal1, openModal2, 
-    closeModal1, closeModal2, buttonColor1, buttonColor2, acenderBotao1, acenderBotao2};
+    closeModal1, closeModal2, buttonColor1, buttonColor2, acenderBotao1, acenderBotao2, name, role, setName, setRole,concluir, aplicar};
 }

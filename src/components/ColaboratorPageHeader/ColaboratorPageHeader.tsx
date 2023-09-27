@@ -4,13 +4,8 @@ import Modal from '../Modal/Modal';
 import { useColaboratorPageHeaderViewModel } from './ColaboratorPageHeaderViewModel';
 const ColaboratorPageHeader = (props : ColaboratorPageHeaderProps) => {
 const {openModal1, openModal2, modalIsOpen1, modalIsOpen2, closeModal1, closeModal2,
-acenderBotao1, acenderBotao2, buttonColor1, buttonColor2} = useColaboratorPageHeaderViewModel(props);
-const aplicar = () => {
-    const abacate = document.getElementById('aplicar') as HTMLButtonElement;
-    props.onclick(abacate.value);
-    closeModal2();
-}
-const viewModel = useColaboratorPageHeaderViewModel(props);
+acenderBotao1, acenderBotao2, buttonColor1, buttonColor2, name, role, setName, setRole,
+concluir, aplicar} = useColaboratorPageHeaderViewModel(props);
 return (
     <>
         <div className='flex flex-row mt-[26px] font-poppins justify-between'>
@@ -19,13 +14,13 @@ return (
                 <div className='flex flex-col justify-center gap-[24px]'>
                     <div className='flex flex-col gap-[12px]'>
                         <div className='w-[352px] h-[63px] border border-[#A3A3A3] rounded-[10px]'>
-                            <input type="text" className='pl-[12px] w-full h-full bg-transparent placeholder:text-[14px] placeholder-[#A3A3A3] outline-none' placeholder='Nome do colaborador'/>
+                            <input value={name} onChange = {(e) => setName(e.target.value)} type="text" className='pl-[12px] w-full h-full bg-transparent placeholder:text-[14px] placeholder-[#A3A3A3] outline-none' placeholder='Nome do colaborador'/>
                         </div>
                         <div className='w-[352px] h-[63px] border border-[#A3A3A3] rounded-[10px] '>
-                            <input type="text" className='pl-[12px] w-full h-full bg-transparent outline-none placeholder:text-[14px]' placeholder='Área'/>
+                            <input value={role} onChange = {(e) => setRole(e.target.value)} type="text" className='pl-[12px] w-full h-full bg-transparent outline-none placeholder:text-[14px]' placeholder='Área'/>
                         </div>
                     </div>
-                    <button className='rounded-[10px]'>
+                    <button className='rounded-[10px]' onClick={concluir}>
                     <div className='w-[352px] h-[60px] rounded-[10px] bg-[#952323] pt-[18px]'>
                         <p className='text-[#FDFDFD] text-[16px] font-semibold'>Concluir</p>
                     </div>
@@ -48,7 +43,7 @@ return (
                     </div>
                     <button className= {'rounded-[10px]'} value={
                             buttonColor1 == 'bg-[#95232340]' ? 'Ranking' : 'Ordem alfabética'
-                        } onClick={aplicar} id = 'aplicar'>
+                        } onClick={() => aplicar('aplicar')} id = 'aplicar'>
                         <div className='w-[352px] h-[60px] rounded-[10px] bg-[#952323] pt-[18px]'>
                             <p className='text-[#FDFDFD] text-[16px] font-semibold'>Aplicar</p>
                         </div>
