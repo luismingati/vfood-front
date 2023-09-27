@@ -1,5 +1,6 @@
 import React from "react";
 import IndicatorsSummary from "../components/IndicatorsSummary/IndicatorsSummary";
+import ReachedIndicators from "../components/ReachedIndicators/ReachedIndicators";
 
 const indicatorsArray = [
   {
@@ -49,6 +50,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
   return (
     <div className="flex flex-1 h-full w-full bg-white rounded-[20px] py-9 px-12">
       <IndicatorsSummary thisMonth={true} indicatorsArray={indicatorsArray} />
+      <ReachedIndicators challenge={10} goal={60} supergoal={20} totalPercentage={90} />
     </div>
   );
 };
