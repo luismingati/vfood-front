@@ -69,6 +69,11 @@ const colaboratorsArray : ColaboratorCardModel[] = [
     name: 'Maria',
     role: 'Dev',
     stars: 4
+  },
+  {
+    name: 'Luis pedro',
+    role: 'Dev',
+    stars: 3.1
   }
 ]
 const indicatorsArray = [
@@ -135,7 +140,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
     for (let index = 5; index > 0 && contador != colaboratorsArray.length; index--){
       let states : number = 0;
       achei = false;
-      if((colaboratorsArray[contador].stars || 0) <= index && (colaboratorsArray[contador].stars || 0) > index - 1 && repetido == false && dataFilter.includes(colaboratorsArray[contador])){
+      if(((colaboratorsArray[contador].stars || 0) <= index) && ((colaboratorsArray[contador].stars || 0) > index - 1) && (repetido == false)){
         elements.push(
           <ColaboratorPageBody contador={index} ColaboratorArray={dataFilter}/>
         );
@@ -150,7 +155,8 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
         continue;
       }
       if(colaboratorsArray[contador + 1] != undefined){
-        if((colaboratorsArray[contador+1].stars || 0) <= index && (colaboratorsArray[contador+1].stars || 0) > index - 1){
+        if((colaboratorsArray[contador+1].stars || 0) <= index && (colaboratorsArray[contador+1].stars || 0) > index - 1 && dataFilter.includes(colaboratorsArray[contador])){
+          console.log(colaboratorsArray[contador].name);
           repetido = true;
           index++;
         }
@@ -168,6 +174,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
     let contador : number = 0;
     let achei : boolean = false;
     let repetido : boolean = false;
+    console.log(colaboratorsArray, dataFilter);
     for (let index = 65; index < 91 && contador != colaboratorsArray.length; index++) {
       let states : number = 0;
       achei = false;
@@ -177,7 +184,6 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
         );
       }
       while(states < colaboratorsArray.length && achei == false){
-        console.log(states);
         if(colaboratorsArray[states].name[0].toLowerCase() == alfabeto[index - 65]){
           achei = true;
         }
@@ -188,11 +194,21 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
       }
       if(colaboratorsArray[contador + 1] != undefined){
         if(colaboratorsArray[contador + 1].name[0].toLowerCase() == alfabeto[index - 65]){
-          repetido = true;
-          index--;
+          if(dataFilter.includes(colaboratorsArray[contador])){
+            repetido = true;
+            index--;
+          }
+          else if(!dataFilter.includes(colaboratorsArray[contador + 1])){
+            repetido = false;
+            index--;
+          }
+          else if(dataFilter.includes(colaboratorsArray[contador + 1])){
+            repetido = false;
+            index--;
+          }
         }
         else{
-          repetido = false;
+            repetido = false;
         }
       }
       contador++;
