@@ -1,5 +1,6 @@
 import React from "react";
 import IndicatorsSummary from "../components/IndicatorsSummary/IndicatorsSummary";
+import ColaboratorHeader from "../components/ColaboratorHeader/ColaboratorHeader";
 
 const indicatorsArray = [
   {
@@ -48,7 +49,7 @@ interface ColaboratorsProps {}
 const Colaborators: React.FC<ColaboratorsProps> = () => {
   return (
     <div className="flex flex-1 h-full w-full bg-white rounded-[20px] py-9 px-12">
-      <IndicatorsSummary thisMonth={true} indicatorsArray={indicatorsArray} />
+      <ColaboratorHeader name={"Alice Martins"} role={"Manager"} stars={4.5}/>
     </div>
   );
 };
