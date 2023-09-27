@@ -28,7 +28,7 @@ const plugins = [
         data.datasets[0].data[1] +
         data.datasets[0].data[2];
       ctx.restore();
-      ctx.font = "bold 20px Poppins ";
+      ctx.font = "bold 22px Poppins ";
       ctx.textBaseline = "top";
       ctx.fillStyle = "black";
       const text = `${totalPercentage}%`,
