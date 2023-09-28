@@ -1,3 +1,4 @@
 interface SearchforColaboratorModel { 
-    name?:string
+    colaborators : Array<ColaboratorCardModel>;
+    onSearch: (query: string) => void;
 }

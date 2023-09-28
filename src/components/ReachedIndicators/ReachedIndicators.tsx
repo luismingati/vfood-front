@@ -1,23 +1,12 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement } from "chart.js";
-
-interface ReachedIndicatorsProps {
-  totalPercentage: number;
-  goal: number;
-  supergoal: number;
-  challenge: number;
-}
+import { ReachedIndicatorsProps } from "./ReachedIndicatorsModel";
 
 Chart.register(ArcElement);
 
 const plugins = [
   {
-    beforeDraw: function (chart: {
-      width: number;
-      height: number;
-      ctx: any;
-      data: any;
-    }) {
+    beforeDraw: function (chart) {
       const width = chart.width,
         height = chart.height,
         ctx = chart.ctx,
@@ -29,16 +18,18 @@ const plugins = [
         data.datasets[0].data[2];
       ctx.restore();
       ctx.font = "bold 22px Poppins ";
-      ctx.textBaseline = "top";
+      ctx.textBaseline = "middle"; 
       ctx.fillStyle = "black";
       const text = `${totalPercentage}%`,
         textX = Math.round((width - ctx.measureText(text).width) / 2),
-        textY = height / 2 - 2;
+        offsetY = 4,  
+        textY = height / 2 + offsetY; 
       ctx.fillText(text, textX, textY);
       ctx.save();
     },
   },
 ];
+
 
 const ReachedIndicators: React.FC<ReachedIndicatorsProps> = ({
   totalPercentage,
