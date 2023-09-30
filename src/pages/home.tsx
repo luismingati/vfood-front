@@ -121,6 +121,7 @@ const Home: React.FC<HomeProps> = () => {
   const [numberOfCards, setNumberOfCards] = useState(6);
   
   const handleSearch = (query: string) => {
+    console.log(valorDigitado)
     setValorDigitado(query);
   };
 

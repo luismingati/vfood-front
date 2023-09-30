@@ -182,6 +182,7 @@ const Profile: React.FC<ProfileProps> = () => {
   const [valorDigitado, setValorDigitado] = useState("");
 
   const handleSearch = (query: string) => {
+    console.log(valorDigitado)
     setValorDigitado(query);
   };
 

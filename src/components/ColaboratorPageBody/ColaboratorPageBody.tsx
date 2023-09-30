@@ -1,6 +1,6 @@
 import ColaboratorCard from "../ColaboratorCard/ColaboratorCard"
 import useColaboratorPageBodyViewModel from "./ColaboratorPageBodyViewModel"
-import {MdStar} from 'react-icons/md'
+//import {MdStar} from 'react-icons/md'
 const ColaboratorPageBody = (props: ColaboratorPageBodyModel) => {
 const {card, stars, cards, alfabeto} = useColaboratorPageBodyViewModel(props);
     return (

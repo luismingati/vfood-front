@@ -13,27 +13,27 @@ const useColaboratorPageBodyViewModel = (model: ColaboratorPageBodyModel) => {
     switch (card.contador) {
         case 5:
             filterEstrelas.pop();
-            return (filterEstrelas.map((star) => { return (<MdStar className=""/>) }))
+            return (filterEstrelas.map((star) => { return (<MdStar className={star}/>) }))
         case 4:
             for(let i : number = 0; i < 2;i++){
                 filterEstrelas.pop();
             }
-            return (filterEstrelas.map((star) => { return (<MdStar className=""/>) }))
+            return (filterEstrelas.map((star) => { return (<MdStar className={star}/>) }))
         case 3:
             for(let i : number = 0; i < 3;i++){
                 filterEstrelas.pop();
             }
-            return (filterEstrelas.map((star) => { return (<MdStar className=""/>) }))
+            return (filterEstrelas.map((star) => { return (<MdStar className={star}/>) }))
         case 2:
             for(let i : number = 0; i < 4;i++){
                 filterEstrelas.pop();
             }
-            return (filterEstrelas.map((star) => { return (<MdStar className=""/>) }))
+            return (filterEstrelas.map((star) => { return (<MdStar className={star}/>) }))
         case 1:
             for(let i : number = 0; i < 5;i++){
                 filterEstrelas.pop();
             }
-            return (filterEstrelas.map((star) => { return (<MdStar className=""/>) }))
+            return (filterEstrelas.map((star) => { return (<MdStar className={star}/>) }))
         default:
             break;
     }

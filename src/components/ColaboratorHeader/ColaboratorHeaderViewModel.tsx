@@ -9,6 +9,7 @@ const useColaboratorHeaderViewModel = (model: ColaboratorCardModel) => {
 
     const handleMonthChange = (month: Date) => {
         //TODO: handle month change
+        console.log(month)
     }
 
     return {
