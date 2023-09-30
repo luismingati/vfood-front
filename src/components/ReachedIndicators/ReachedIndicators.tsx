@@ -33,7 +33,7 @@ const plugins = [
       ctx.fillStyle = "black";
       const text = `${totalPercentage}%`,
         textX = Math.round((width - ctx.measureText(text).width) / 2),
-        textY = height / 2 - 2;
+        textY = height / 2 - 8;
       ctx.fillText(text, textX, textY);
       ctx.save();
     },

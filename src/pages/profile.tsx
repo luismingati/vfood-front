@@ -4,6 +4,7 @@ import ColaboratorHeader from "../components/ColaboratorHeader/ColaboratorHeader
 import IndicatorsSummary from "../components/IndicatorsSummary/IndicatorsSummary";
 import NotReachedIndicatorCard from "../components/NotReachedIndicatorCard/NotReachedIndicatorCard";
 import Graph from "../components/Graph/Graph";
+import ReachedIndicators from "../components/ReachedIndicators/ReachedIndicators";
 
 const indicatorsArray = [
   {
@@ -200,8 +201,11 @@ const Profile: React.FC<ProfileProps> = () => {
         <div className="flex flex-col items-end w-full">
           <p className="h-[36px]">Baixar</p>
           <div className="flex justify-between gap-4 w-full">
-            <NotReachedIndicatorCard
-              notReachedIndicatorCardData={notReachedArray}
+            <ReachedIndicators
+              challenge={10}
+              goal={50}
+              supergoal={20}
+              totalPercentage={80}
             />
             <NotReachedIndicatorCard
               notReachedIndicatorCardData={notReachedArray}
