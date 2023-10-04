@@ -18,72 +18,21 @@ const CardHighlight: React.FC<CardHighlightProps> = (props: CardHighlightProps) 
       </div>
       <Modal title='Colaboradores' isOpen={modalIsOpen} onClose={closeModal}>
       <div className='flex flex-col gap-3 h-full max-h-96 overflow-y-auto no-scrollbar'>
-          <div className='flex items-center justify-between py-[10px] px-4'>
-            <div className='flex  gap-3'>
-              <img src={profile} alt="" />
-              <div className=''>
-                <p className='text-sm'>Marketing</p>
-                <h3 className='font-bold text-lg'>Alice Martins</h3>
+        {props.data && props.data.map((item) => {
+        return (
+            <div key={item.id} className='flex items-center justify-between py-[10px] px-4'>
+              <div className='flex gap-3'>
+                <img src={profile} alt="" />
+                <div>
+                  <p className='text-sm'>{item.area}</p>
+                  <h3 className='font-bold text-lg'>{item.name}</h3>
+                </div>
               </div>
+              <NoteCard note={item.grade} long={false}/>
             </div>
-            <NoteCard note={10} long={false}/>
-          </div>
-
-          <div className='flex items-center justify-between py-[10px] px-4'>
-            <div className='flex  gap-3'>
-              <img src={profile} alt="" />
-              <div className=''>
-                <p className='text-sm'>Marketing</p>
-                <h3 className='font-bold text-lg'>Alice Martins</h3>
-              </div>
-            </div>
-            <NoteCard note={8} long={false}/>
-          </div>
-
-          <div className='flex items-center justify-between py-[10px] px-4'>
-            <div className='flex  gap-3'>
-              <img src={profile} alt="" />
-              <div className=''>
-                <p className='text-sm'>Marketing</p>
-                <h3 className='font-bold text-lg'>Alice Martins</h3>
-              </div>
-            </div>
-            <NoteCard note={8} long={false}/>
-          </div>
-
-          <div className='flex items-center justify-between py-[10px] px-4'>
-            <div className='flex  gap-3'>
-              <img src={profile} alt="" />
-              <div className=''>
-                <p className='text-sm'>Marketing</p>
-                <h3 className='font-bold text-lg'>Alice Martins</h3>
-              </div>
-            </div>
-            <NoteCard note={6} long={false}/>
-          </div>
-
-          <div className='flex items-center justify-between py-[10px] px-4'>
-            <div className='flex  gap-3'>
-              <img src={profile} alt="" />
-              <div className=''>
-                <p className='text-sm'>Marketing</p>
-                <h3 className='font-bold text-lg'>Alice Martins</h3>
-              </div>
-            </div>
-            <NoteCard note={2} long={false}/>
-          </div>
-
-          <div className='flex items-center justify-between py-[10px] px-4'>
-            <div className='flex  gap-3'>
-              <img src={profile} alt="" />
-              <div className=''>
-                <p className='text-sm'>Marketing</p>
-                <h3 className='font-bold text-lg'>Alice Martins</h3>
-              </div>
-            </div>
-            <NoteCard note={10} long={false}/>
-          </div>
-        </div>
+          );
+        })}
+      </div>
       </Modal>
     </>
   );

@@ -33,7 +33,6 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
 
   // Função para mostrar opções de indicadores coerentes com a busca
   const handleSearchIndicators = (e: React.FormEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget.value);
     setIndicatorsSearchValue(e.currentTarget.value);
 
     if (indicatorsSearchValue != "") {
