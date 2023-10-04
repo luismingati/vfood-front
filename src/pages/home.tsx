@@ -67,7 +67,8 @@ const Home: React.FC<HomeProps> = () => {
       .get("http://localhost:3000/colaborator/")
       .then((response) => {
         const colaboratorsData = response.data.map(
-          (item: { name: string; area: string; grade: number }) => ({
+          (item: { id: number, name: string; area: string; grade: number }) => ({
+            id: item.id,
             name: item.name,
             role: item.area,
             stars: item.grade,
