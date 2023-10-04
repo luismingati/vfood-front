@@ -34,7 +34,7 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     axios
       .get("http://localhost:3000/indicator/")
       .then((response) => {
-        console.log(response);
+       
         setAllIndicatorsArray(response.data);
       })
       .catch((error) => {
