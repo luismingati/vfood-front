@@ -23,6 +23,10 @@ const Home: React.FC<HomeProps> = () => {
   const [numberOfCards, setNumberOfCards] = useState(6);
   const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
   
+  const date = new Date();
+  const currentMonth = date.toLocaleDateString("pt-BR", { month: "long" });
+  const currentMonthCapitalized = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
+  
   const [colaboratorsArray, setColaboratorsArray] = useState<
     ColaboratorCardModel[]
   >([]);
@@ -112,7 +116,7 @@ const Home: React.FC<HomeProps> = () => {
         </p>
         <div className="flex gap-6">
           <Graph graphData={graphData} fullWidth={true} />
-          <MonthHighlight month="Setembro" />
+          <MonthHighlight month={currentMonthCapitalized} />
         </div>
       </div>
       <div>
