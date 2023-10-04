@@ -31,7 +31,7 @@ return (
             }/>                
             <Modal title='Ordenar' isOpen={modalIsOpen2} onClose={closeModal2} children = 
              {
-                <div className='flex flex-col justify-center gap-[48px]'> 
+                <div className='flex flex-col justify-center gap-[48px] px-[10px] mt-[36px]'> 
                     <div className='flex flex-col gap-[20px]'>
                         <h1 className='text-[#312843] font-bold text-[16px]'>Mostrar colaboradores por:</h1>
                         <div className='flex flex-col gap-[3px]'>
@@ -46,7 +46,7 @@ return (
                     <button className= {'rounded-[10px]'} value={
                             buttonColor1 == 'bg-[#95232340]' ? 'Ranking' : 'Ordem alfabética'
                         } onClick={() => aplicar('aplicar')} id = 'aplicar'>
-                        <div className='w-[352px] h-[60px] rounded-[10px] bg-[#952323] pt-[18px]'>
+                        <div className='w-full h-[60px] rounded-[10px] bg-[#952323] pt-[18px]'>
                             <p className='text-[#FDFDFD] text-[16px] font-semibold'>Aplicar</p>
                         </div>
                     </button>
