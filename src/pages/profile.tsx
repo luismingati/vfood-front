@@ -1,10 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Searchbar from "../components/Searchbar/Searchbar";
 import ColaboratorHeader from "../components/ColaboratorHeader/ColaboratorHeader";
 import IndicatorsSummary from "../components/IndicatorsSummary/IndicatorsSummary";
 import NotReachedIndicatorCard from "../components/NotReachedIndicatorCard/NotReachedIndicatorCard";
 import Graph from "../components/Graph/Graph";
 import ReachedIndicators from "../components/ReachedIndicators/ReachedIndicators";
+import { useParams } from 'react-router-dom';
+
+interface Indicators {
+  name: string;
+  weight: number;
+  progress: number;
+  unit: string,
+  goal: number;
+  superGoal: number;
+  challenge: number;
+}
+interface Metas {
+  colaboratorID: number,
+  indicatorID: number,
+  progress: number,
+  indicator: Indicators
+}
+interface Supermetas {
+  colaboratorID: number,
+  indicatorID: number,
+  progress: number,
+  indicator: Indicators
+}
+interface Desafios {
+  colaboratorID: number,
+  indicatorID: number,
+  progress: number,
+  indicator: Indicators
+}
+interface NotCompleted {
+  colaboratorID: number,
+  indicatorID: number,
+  progress: number,
+  indicator: Indicators
+}
+interface UserData {
+  id: number;
+  name: string,
+  area: string,
+  grade: number,
+  indicators: Indicators[],
+  metas: Metas[],
+  supermetas: Supermetas[],
+  desafios: Desafios[],
+  notCompleted: NotCompleted[]
+}
 
 const indicatorsArray = [
   {
@@ -180,7 +226,25 @@ const notReachedArray = [
 ];
 
 const Profile: React.FC<ProfileProps> = () => {
+  const { id } = useParams<{id: string}>();
   const [valorDigitado, setValorDigitado] = useState("");
+  const [userData, setUserData] = useState<UserData>({} as UserData);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/colaborator/${id}`);
+        const data = await response.json();
+        
+        setUserData(data);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
 
   const handleSearch = (query: string) => {
     setValorDigitado(query);
@@ -189,12 +253,12 @@ const Profile: React.FC<ProfileProps> = () => {
   return (
     <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12">
       <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
-      <ColaboratorHeader name={"Alice Martins"} role={"Manager"} stars={4.5} />
+      <ColaboratorHeader name={userData.name} role={userData.area} stars={userData.grade} />
 
       <div className="flex gap-10">
         <div className="w-full">
           <IndicatorsSummary
-            indicatorsArray={indicatorsArray}
+            indicatorsArray={userData.indicators}
             thisMonth={true}
           />
         </div>
