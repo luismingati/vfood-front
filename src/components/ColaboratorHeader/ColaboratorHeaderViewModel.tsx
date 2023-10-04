@@ -8,7 +8,7 @@ const useColaboratorHeaderViewModel = (model: ColaboratorCardModel & { onMonthCh
     }, [model])
 
     const handleMonthChange = (month: Date) => {
-        model.onMonthChange(month); // Chame a função passada como propriedade para notificar a mudança do mês
+        model.onMonthChange(month); 
     }
 
     return {
