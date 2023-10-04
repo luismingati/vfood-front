@@ -201,6 +201,8 @@ const mapNotReachedIndicatorsToFrontend = (backendData: BackendData): Array<NotR
   }));
 };
 
+interface ProfileProps {}
+
 const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
   return backendData.indicators.map((indicator: Indicator) => {
     const progress = findProgressForIndicator(indicator.id, [
@@ -241,6 +243,7 @@ const Profile: React.FC<ProfileProps> = () => {
   const [notReachedIndicators, setNotReachedIndicators] = useState<Array<NotReachedIndicatorCardData>>([]);
   const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
 
+  const [isCurrentDate, setIsCurrentDate] = useState(true); 
   const [valorDigitado, setValorDigitado] = useState("");
   const handleSearch = (value: string) => {
     setValorDigitado(value);
@@ -308,6 +311,11 @@ const Profile: React.FC<ProfileProps> = () => {
   fetchGraphData();
 
   const handleMonthChange = (date: Date) => {
+    if(date.getMonth()+1 === new Date().getMonth()+1 && date.getFullYear() === new Date().getFullYear()) {
+      setIsCurrentDate(true);
+    } else {
+      setIsCurrentDate(false);
+    }
     fetchColaboratorData(date);
     fetchGraphData(); 
   };
@@ -325,7 +333,7 @@ const Profile: React.FC<ProfileProps> = () => {
         <div className="w-full">
           <IndicatorsSummary
             indicatorsArray={indicatorsArray}
-            thisMonth={true}
+            thisMonth={isCurrentDate}
             colabID={parseInt(
               window.location.href.charAt(window.location.href.length - 1)
             )}
@@ -335,10 +343,10 @@ const Profile: React.FC<ProfileProps> = () => {
           <p className="h-[36px]">Baixar</p>
           <div className="flex justify-between gap-4 w-full">
             <ReachedIndicators
-              challenge={challengePercentage}
-              goal={goalPercentage}
-              supergoal={superGoalPercentage}
-              totalPercentage={totalPercentage}
+              challenge={parseFloat(challengePercentage.toFixed(0))}
+              goal={parseFloat(goalPercentage.toFixed(0))}
+              supergoal={parseFloat(superGoalPercentage.toFixed(0))}
+              totalPercentage={parseFloat(totalPercentage.toFixed(0))}
             />
             <NotReachedIndicatorCard
               notReachedIndicatorCardData={notReachedIndicators}
@@ -352,5 +360,3 @@ const Profile: React.FC<ProfileProps> = () => {
 };
 
 export default Profile;
-
-interface ProfileProps {}
