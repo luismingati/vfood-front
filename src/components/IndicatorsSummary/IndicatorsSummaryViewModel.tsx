@@ -78,7 +78,6 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
           .includes(indicatorsSearchValue.toLowerCase())
       );
 
-      console.log(result);
       setIndicatorsSearchResultsArray(result);
     } else {
       setIndicatorsSearchResultsArray([]);
