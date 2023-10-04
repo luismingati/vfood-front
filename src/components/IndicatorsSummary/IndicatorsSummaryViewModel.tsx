@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 interface IndicatorCardComplete extends IndicatorCard {
@@ -40,11 +40,22 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
       .catch((error) => {
         console.error("Erro ao buscar indicadores:", error);
       });
-  }, [model]);
+  }, [model, modalFlag]);
 
   // Funções para abrir e fechar o modal
   const openModal = () => setModalFlag(true);
   const closeModal = () => setModalFlag(false);
+
+  // Função para fechar o modal no background
+  const handleOverlayClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (event.target === event.currentTarget) {
+        closeModal();
+        changeModalStep(0);
+      }
+    },
+    []
+  );
 
   // Função para mudar a etapa do modal
   const changeModalStep = (step: number) => setIndicatorModalStep(step);
@@ -61,7 +72,10 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
 
     if (indicatorsSearchValue != "") {
       const result = allIndicatorsArray.filter((indicator) =>
-        indicator.name.includes(indicatorsSearchValue)
+        indicator.name
+          .slice(0, indicatorsSearchValue.length)
+          .toLowerCase()
+          .includes(indicatorsSearchValue.toLowerCase())
       );
 
       console.log(result);
@@ -141,7 +155,11 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
         console.log(error);
       });
 
-    // 3. Atualizar o front para aparecer o novo indicador na lista
+    // 3. Fechar o modal
+    closeModal();
+    changeModalStep(0);
+
+    // 4. Atualizar o front para aparecer o novo indicador na lista
   };
   const handleAttachIndicator = () => {
     // Função de adicionar indicador existente ao colaborador
@@ -159,7 +177,11 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
         console.log(error);
       });
 
-    // 2. Atualizar o front para aparecer o novo indicador na lista
+    // 2. Fechar o modal
+    closeModal();
+    changeModalStep(0);
+
+    // 3. Atualizar o front para aparecer o novo indicador na lista
   };
 
   return {
@@ -186,6 +208,7 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     setGoal,
     setSuperGoal,
     setChallenge,
+    handleOverlayClick,
   };
 };
 
