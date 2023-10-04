@@ -156,6 +156,20 @@ interface BackendData {
   notCompleted: Meta[];
 }
 
+interface ApiResponse {
+  [month: string]: {
+    [type: string]: number;
+  };
+}
+
+interface GraphDataItem {
+  nGoal: number;
+  nSuperGoal: number;
+  nChallenge: number;
+  nFailed: number;
+}
+
+
 const findProgressForIndicator = (indicatorId: number, arrays: (Meta[])[]): number => {
   for (const arr of arrays) {
     const found = arr.find((item: Meta) => item.indicatorID === indicatorId);
@@ -227,6 +241,8 @@ const Profile: React.FC<ProfileProps> = () => {
   const [superGoalPercentage, setSuperGoalPercentage] = useState(0);
   const [totalPercentage, setTotalPercentage] = useState(0);
   const [notReachedIndicators, setNotReachedIndicators] = useState<Array<NotReachedIndicatorCardData>>([]);
+  const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
+
   const [isCurrentDate, setIsCurrentDate] = useState(true); 
   const [valorDigitado, setValorDigitado] = useState("");
   const handleSearch = (value: string) => {
@@ -256,6 +272,44 @@ const Profile: React.FC<ProfileProps> = () => {
     }
   };
 
+  function transformApiResponse(apiResponse: ApiResponse, currentMonth: number): GraphDataItem[] {
+    const graphData: GraphDataItem[] = [];
+  
+    for (let i = 0; i < 6; i++) {
+      const monthData = apiResponse[currentMonth.toString()] || {};
+      
+      const nGoal = monthData['1'] || 0;
+      const nSuperGoal = monthData['2'] || 0;
+      const nChallenge = monthData['3'] || 0;
+      const nFailed = monthData['0'] || 0;
+      
+      graphData.unshift({ nGoal, nSuperGoal, nChallenge, nFailed });
+  
+      currentMonth--;
+      if (currentMonth < 1) {
+        break;
+      }
+    }
+  
+    return graphData;
+  }
+
+  const fetchGraphData = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/graph/all-graph-data/${id}`);
+      const data = await response.json();
+
+      const graphData = transformApiResponse(data, new Date().getMonth());
+
+      setGraphData(graphData);
+
+    } catch (error) {
+      console.log("Não foi possível resgatar os dados" ,error);
+    }
+  }
+
+  fetchGraphData();
+
   const handleMonthChange = (date: Date) => {
     if(date.getMonth()+1 === new Date().getMonth()+1 && date.getFullYear() === new Date().getFullYear()) {
       setIsCurrentDate(true);
@@ -263,6 +317,7 @@ const Profile: React.FC<ProfileProps> = () => {
       setIsCurrentDate(false);
     }
     fetchColaboratorData(date);
+    fetchGraphData(); 
   };
 
   useEffect(() => {
