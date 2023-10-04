@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 export const useColaboratorPageHeaderViewModel = (model : ColaboratorPageHeaderProps) => {
     const [modalIsOpen1, setIsOpen1] = useState(false);
     const [modalIsOpen2, setIsOpen2] = useState(false);
@@ -27,6 +28,20 @@ export const useColaboratorPageHeaderViewModel = (model : ColaboratorPageHeaderP
         setButtonColor2('bg-[#95232340]');
     };
     const concluir = () => {
+        const novoColaborador = {
+            name : name, 
+            area : role,
+            grade : null
+        };
+        axios.post('http://localhost:3000/colaborator', novoColaborador)
+        .then((response) => {
+            closeModal1();
+            setName('');
+            setRole('');
+        })
+        .catch((error) => {
+          console.error('Erro ao buscar colaboradores:', error);
+        });
         closeModal1();
         setName('');
         setRole('');
