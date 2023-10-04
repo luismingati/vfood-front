@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface IndicatorCardComplete extends IndicatorCard {
+  id: number;
+}
 
 const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
   const [indicatorsSummary, setIndicatorsSummary] =
@@ -9,13 +14,32 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
 
   const [unitOptionsFlag, setUnitOptionsFlag] = useState(false);
   const [unit, setUnit] = useState("");
+  const [name, setName] = useState("");
+  const [weight, setWeight] = useState("");
+  const [goal, setGoal] = useState("");
+  const [superGoal, setSuperGoal] = useState("");
+  const [challenge, setChallenge] = useState("");
 
+  const [allIndicatorsArray, setAllIndicatorsArray] = useState<
+    Array<IndicatorCardComplete>
+  >([]);
   const [indicatorsSearchResultsArray, setIndicatorsSearchResultsArray] =
-    useState<Array<IndicatorCard>>([]);
+    useState<Array<IndicatorCardComplete>>([]);
   const [indicatorsSearchValue, setIndicatorsSearchValue] = useState("");
+  const [indicatorsSearchID, setIndicatorsSearchID] = useState(0);
 
   useEffect(() => {
     setIndicatorsSummary(model);
+
+    axios
+      .get("http://localhost:3000/indicator/")
+      .then((response) => {
+        console.log(response);
+        setAllIndicatorsArray(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar indicadores:", error);
+      });
   }, [model]);
 
   // Funções para abrir e fechar o modal
@@ -33,14 +57,14 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
 
   // Função para mostrar opções de indicadores coerentes com a busca
   const handleSearchIndicators = (e: React.FormEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget.value);
     setIndicatorsSearchValue(e.currentTarget.value);
 
     if (indicatorsSearchValue != "") {
-      const result = indicatorsSummary.indicatorsArray.filter((indicator) =>
+      const result = allIndicatorsArray.filter((indicator) =>
         indicator.name.includes(indicatorsSearchValue)
       );
 
+      console.log(result);
       setIndicatorsSearchResultsArray(result);
     } else {
       setIndicatorsSearchResultsArray([]);
@@ -48,8 +72,12 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
   };
 
   // Função para escolher o indicador ao clicar na opção
-  const handleChangeInputValue = (indicatorName: string) => {
+  const handleChangeInputValue = (
+    indicatorName: string,
+    indicatorID: number
+  ) => {
     setIndicatorsSearchValue(indicatorName);
+    setIndicatorsSearchID(indicatorID);
     setIndicatorsSearchResultsArray([]);
   };
 
@@ -83,15 +111,54 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     return dataArray;
   };
 
-  const handleSaveNewIndicator = () => {
-    // Função de concluir criação do novo indicador e adicionar o novo indicador ao colaborador
+  const handleSaveNewIndicator = async () => {
     // 1. Adicionar o novo indicador no DB de indicadores
-    // 2. Adicionar o indicador na lista de indicadores do colaborador
+    await axios
+      .post("http://localhost:3000/indicator/", {
+        name: name,
+        weight: parseFloat(weight),
+        type: unit == "Número" ? 0 : unit == "Financeiro" ? 1 : 2,
+        meta: unit == "Número" ? parseInt(goal) : parseFloat(goal),
+        supermeta:
+          unit == "Número" ? parseInt(superGoal) : parseFloat(superGoal),
+        desafio: unit == "Número" ? parseInt(challenge) : parseFloat(challenge),
+      })
+      // 2. Adicionar o indicador na lista de indicadores do colaborador
+      .then(function (response) {
+        axios
+          .post("http://localhost:3000/fazer/", {
+            colaborator: indicatorsSummary.colabID,
+            indicator: response.data.id,
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     // 3. Atualizar o front para aparecer o novo indicador na lista
   };
   const handleAttachIndicator = () => {
     // Função de adicionar indicador existente ao colaborador
+
     // 1. Adicionar o indicador na lista de indicadores do colaborador
+    axios
+      .post("http://localhost:3000/fazer/", {
+        colaborator: indicatorsSummary.colabID,
+        indicator: indicatorsSearchID,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     // 2. Atualizar o front para aparecer o novo indicador na lista
   };
 
@@ -114,6 +181,11 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     getGraphData,
     handleSaveNewIndicator,
     handleAttachIndicator,
+    setName,
+    setWeight,
+    setGoal,
+    setSuperGoal,
+    setChallenge,
   };
 };
 

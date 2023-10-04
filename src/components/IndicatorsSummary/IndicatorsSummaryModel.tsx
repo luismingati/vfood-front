@@ -2,7 +2,7 @@ interface IndicatorCard {
   name: string;
   weight: number;
   progress: number;
-  unit: string,
+  unit: string;
   goal: number;
   superGoal: number;
   challenge: number;
@@ -11,4 +11,5 @@ interface IndicatorCard {
 interface IndicatorsSummaryModel {
   indicatorsArray: Array<IndicatorCard>;
   thisMonth: boolean;
+  colabID: number;
 }

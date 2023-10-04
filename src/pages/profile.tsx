@@ -92,71 +92,85 @@ const colaboratorsArray: ColaboratorCardModel[] = [
     name: "Thales",
     role: "Dev",
     stars: 5,
+    id: 1,
   },
   {
     name: "Luis Felipe",
     role: "Dev",
     stars: 5,
+    id: 2,
   },
   {
     name: "Luis Otavio",
     role: "Dev",
     stars: 5,
+    id: 3,
   },
   {
     name: "Lucas",
     role: "Dev",
     stars: 5,
+    id: 4,
   },
   {
     name: "Antonio",
     role: "Dev",
     stars: 5,
+    id: 5,
   },
   {
     name: "Bruno",
     role: "Dev",
     stars: 4.1,
+    id: 6,
   },
   {
     name: "Ana Clara",
     role: "Dev",
     stars: 4.5,
+    id: 7,
   },
   {
     name: "Ana Beatriz",
     role: "Dev",
     stars: 3.2,
+    id: 8,
   },
   {
     name: "Carlos Eduardo",
     role: "Dev",
     stars: 2.5,
+    id: 9,
   },
   {
     name: "Ze",
     role: "Dev",
     stars: 1.5,
+    id: 10,
   },
   {
     name: "Pedro",
     role: "Dev",
     stars: 0.5,
+    id: 11,
   },
   {
     name: "Joao",
     role: "Dev",
     stars: 0.2,
+    id: 12,
   },
   {
     name: "Maria",
     role: "Dev",
     stars: 4,
+    id: 13,
   },
   {
     name: "Luis pedro",
     role: "Dev",
     stars: 3.1,
+    id: 14,
   },
 ];
 
@@ -189,13 +203,21 @@ const Profile: React.FC<ProfileProps> = () => {
   return (
     <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12">
       <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
-      <ColaboratorHeader name={"Alice Martins"} role={"Manager"} stars={4.5} />
+      <ColaboratorHeader
+        name={"Alice Martins"}
+        role={"Manager"}
+        stars={4.5}
+        id={2}
+      />
 
       <div className="flex gap-10">
         <div className="w-full">
           <IndicatorsSummary
             indicatorsArray={indicatorsArray}
             thisMonth={true}
+            colabID={parseInt(
+              window.location.href.charAt(window.location.href.length - 1)
+            )}
           />
         </div>
         <div className="flex flex-col items-end w-full">
