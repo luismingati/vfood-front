@@ -31,10 +31,10 @@ const ColaboratorPageBody = (props: ColaboratorPageBodyModel) => {
                 else
                   return (
                     <ColaboratorCard
+                      id={carta.id}
                       name={carta.name}
                       role={carta.role}
                       stars={carta.stars}
-                      id={carta.id}
                     />
                   );
               } else {

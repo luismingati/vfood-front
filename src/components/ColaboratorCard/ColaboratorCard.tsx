@@ -6,7 +6,7 @@ const ColaboratorCard = (props: ColaboratorCardModel) => {
   const viewModel = useColaboratorCardViewModel(props);
 
   return (
-    <Link to={`/colaborator/${viewModel.card.id}`}>
+    <Link to={`/colaborators/${viewModel.card.id}`}>
       <div className="min-w-[162px] h-[182px] flex flex-col text-slate-800 gap-[2px] px-[20px] py-[10px] bg-neutral-50 rounded-[10px] justify-center items-center cursor-pointer">
         <img
           src={viewModel.card.avatar ? viewModel.card.avatar : "./avatar.png"}
