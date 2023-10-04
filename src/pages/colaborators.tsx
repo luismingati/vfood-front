@@ -9,6 +9,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
   const [colaboratorsArray, setColaboratorsArray] = useState<ColaboratorCardModel[]>([]);
   const [valorDigitado, setValorDigitado] = useState("");
   const [value, setValue] = useState("");
+  useEffect(() => {
     axios.get('http://localhost:3000/colaborator/')
       .then((response) => {
         const colaboratorsData = response.data.map((item: {
@@ -25,6 +26,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
       .catch((error) => {
         console.error('Erro ao buscar colaboradores:', error);
       });
+  }, [colaboratorsArray]);
   const alfabeto: string = "abcdefghijklmnopqrstuvwxyz";
   const handleSearch = (query: string) => {
     setValorDigitado(query);
