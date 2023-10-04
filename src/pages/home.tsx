@@ -73,7 +73,7 @@ const Home: React.FC<HomeProps> = () => {
             stars: item.grade,
           })
         );
-        colaboratorsData.sort(function (a, b) {
+        colaboratorsData.sort(function (a: { name: string; role: string; stars: number }, b: { name: string; role: string; stars: number }) {
           return a.stars > b.stars ? -1 : a.stars < b.stars ? 1 : 0;
         });
         setColaboratorsArray(colaboratorsData);
