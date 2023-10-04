@@ -4,27 +4,30 @@ import ColaboratorPageHeader from "../components/ColaboratorPageHeader/Colaborat
 import ColaboratorPageBody from "../components/ColaboratorPageBody/ColaboratorPageBody";
 import { useState, useEffect } from "react";
 import axios from "axios";
+
 interface ColaboratorsProps {}
+
 const Colaborators: React.FC<ColaboratorsProps> = () => {
-  const [colaboratorsArray, setColaboratorsArray] = useState<ColaboratorCardModel[]>([]);
+  const [colaboratorsArray, setColaboratorsArray] = useState<
+    ColaboratorCardModel[]
+  >([]);
   const [valorDigitado, setValorDigitado] = useState("");
   const [value, setValue] = useState("");
   useEffect(() => {
-    axios.get('http://localhost:3000/colaborator/')
+    axios
+      .get("http://localhost:3000/colaborator/")
       .then((response) => {
-        const colaboratorsData = response.data.map((item: {
-          name: string;
-          area: string;
-          grade: number;
-        }) => ({
-          name: item.name,
-          role: item.area,
-          stars: item.grade,
-        }));
+        const colaboratorsData = response.data.map(
+          (item: { name: string; area: string; grade: number }) => ({
+            name: item.name,
+            role: item.area,
+            stars: item.grade,
+          })
+        );
         setColaboratorsArray(colaboratorsData);
       })
       .catch((error) => {
-        console.error('Erro ao buscar colaboradores:', error);
+        console.error("Erro ao buscar colaboradores:", error);
       });
   }, [colaboratorsArray]);
   const alfabeto: string = "abcdefghijklmnopqrstuvwxyz";

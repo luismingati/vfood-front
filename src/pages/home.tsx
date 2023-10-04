@@ -127,6 +127,7 @@ const Home: React.FC<HomeProps> = () => {
                 stars={colaborator.stars}
                 avatar={colaborator.avatar}
                 bg={colaborator.bg}
+                id={colaborator.id}
               />
             );
           })}

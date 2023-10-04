@@ -34,6 +34,12 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
     getGraphData,
     handleSaveNewIndicator,
     handleAttachIndicator,
+    setName,
+    setWeight,
+    setGoal,
+    setSuperGoal,
+    setChallenge,
+    handleOverlayClick,
   } = useIndicatorsSummaryViewModel(props);
 
   if (indicatorsSummary.indicatorsArray.length == 0) {
@@ -57,7 +63,10 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
         </div>
 
         {modalFlag && (
-          <div className="fixed w-full h-full top-0 left-0 bg-[#00000067] flex justify-center items-center">
+          <div
+            className="fixed w-full h-full top-0 left-0 bg-[#00000067] flex justify-center items-center"
+            onClick={handleOverlayClick}
+          >
             <div className="w-full max-w-[393px] bg-white rounded-[10px] py-6 px-5">
               <div className="flex justify-center items-center w-full relative mb-7">
                 <p className="font-poppins text-[18px] font-bold">
@@ -121,6 +130,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                         id="indicatorName"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                        onChange={(e) => setName(e.target.value)}
                       />
                     </label>
                     <label
@@ -135,6 +145,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                         id="indicatorWeight"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                        onChange={(e) => setWeight(e.target.value)}
                       />
                     </label>
                     <label
@@ -172,7 +183,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                             ? "hidden"
                             : ""
                         } mb-2 select-none caret-transparent disabled w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]`}
-                        value={unit}
+                        defaultValue={unit}
                       />
                       <ul
                         className={`flex flex-col gap-1 ${
@@ -227,6 +238,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                         id="indicatorGoal"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                        onChange={(e) => setGoal(e.target.value)}
                       />
                     </label>
 
@@ -242,6 +254,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                         id="indicatorSupergoal"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                        onChange={(e) => setSuperGoal(e.target.value)}
                       />
                     </label>
 
@@ -257,6 +270,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                         id="indicatorChallenge"
                         placeholder=""
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                        onChange={(e) => setChallenge(e.target.value)}
                       />
                     </label>
                   </div>
@@ -288,13 +302,22 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                       value={indicatorsSearchValue}
                       className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
                     />
-                    <ul className="font-poppins text-[16px] text-[#7c7c7c] [&>*:first-child]:mt-2 [&>*:first-child]:border-t-2 [&>*:first-child]:pt-2 flex flex-col gap-1">
+                    <ul
+                      className={`font-poppins text-[16px] text-[#7c7c7c] ${
+                        indicatorsSearchResultsArray.length > 0
+                          ? "mt-2 border-t-2 pt-2"
+                          : ""
+                      } flex flex-col gap-1  max-h-[118px] overflow-y-auto`}
+                    >
                       {indicatorsSearchResultsArray.map((indicator, index) => {
                         return (
                           <li
                             className="hover:text-[#312843] cursor-pointer"
                             onClick={() =>
-                              handleChangeInputValue(indicator.name)
+                              handleChangeInputValue(
+                                indicator.name,
+                                indicator.id
+                              )
                             }
                             key={index}
                           >
@@ -353,7 +376,10 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
           </div>
 
           {modalFlag && (
-            <div className="fixed w-full h-full top-0 left-0 bg-[#00000067] flex justify-center items-center">
+            <div
+              className="fixed w-full h-full top-0 left-0 bg-[#00000067] flex justify-center items-center"
+              onClick={handleOverlayClick}
+            >
               <div className="w-full max-w-[393px] bg-white rounded-[10px] py-6 px-5">
                 <div className="flex justify-center items-center w-full relative mb-7">
                   <p className="font-poppins text-[18px] font-bold">
@@ -417,6 +443,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                           id="indicatorName"
                           placeholder=""
                           className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                          onChange={(e) => setName(e.target.value)}
                         />
                       </label>
                       <label
@@ -431,6 +458,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                           id="indicatorWeight"
                           placeholder=""
                           className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                          onChange={(e) => setWeight(e.target.value)}
                         />
                       </label>
                       <label
@@ -468,7 +496,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                               ? "hidden"
                               : ""
                           } mb-2 select-none caret-transparent disabled w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]`}
-                          value={unit}
+                          defaultValue={unit}
                         />
                         <ul
                           className={`flex flex-col gap-1 ${
@@ -523,6 +551,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                           id="indicatorGoal"
                           placeholder=""
                           className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                          onChange={(e) => setGoal(e.target.value)}
                         />
                       </label>
 
@@ -538,6 +567,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                           id="indicatorSupergoal"
                           placeholder=""
                           className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                          onChange={(e) => setSuperGoal(e.target.value)}
                         />
                       </label>
 
@@ -553,6 +583,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                           id="indicatorChallenge"
                           placeholder=""
                           className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
+                          onChange={(e) => setChallenge(e.target.value)}
                         />
                       </label>
                     </div>
@@ -584,14 +615,23 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                         value={indicatorsSearchValue}
                         className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
                       />
-                      <ul className="font-poppins text-[16px] text-[#7c7c7c] [&>*:first-child]:mt-2 [&>*:first-child]:border-t-2 [&>*:first-child]:pt-2 flex flex-col gap-1">
+                      <ul
+                        className={`font-poppins text-[16px] text-[#7c7c7c] ${
+                          indicatorsSearchResultsArray.length > 0
+                            ? "mt-2 border-t-2 pt-2"
+                            : ""
+                        } flex flex-col gap-1  max-h-[118px] overflow-y-auto`}
+                      >
                         {indicatorsSearchResultsArray.map(
                           (indicator, index) => {
                             return (
                               <li
                                 className="hover:text-[#312843] cursor-pointer"
                                 onClick={() =>
-                                  handleChangeInputValue(indicator.name)
+                                  handleChangeInputValue(
+                                    indicator.name,
+                                    indicator.id
+                                  )
                                 }
                                 key={index}
                               >
