@@ -6,93 +6,7 @@ import NotReachedIndicatorCard from "../components/NotReachedIndicatorCard/NotRe
 import Graph from "../components/Graph/Graph";
 import ReachedIndicators from "../components/ReachedIndicators/ReachedIndicators";
 import { useParams } from 'react-router-dom';
-
-interface Indicators {
-  name: string;
-  weight: number;
-  progress: number;
-  unit: string,
-  goal: number;
-  superGoal: number;
-  challenge: number;
-}
-interface Metas {
-  colaboratorID: number,
-  indicatorID: number,
-  progress: number,
-  indicator: Indicators
-}
-interface Supermetas {
-  colaboratorID: number,
-  indicatorID: number,
-  progress: number,
-  indicator: Indicators
-}
-interface Desafios {
-  colaboratorID: number,
-  indicatorID: number,
-  progress: number,
-  indicator: Indicators
-}
-interface NotCompleted {
-  colaboratorID: number,
-  indicatorID: number,
-  progress: number,
-  indicator: Indicators
-}
-interface UserData {
-  id: number;
-  name: string,
-  area: string,
-  grade: number,
-  indicators: Indicators[],
-  metas: Metas[],
-  supermetas: Supermetas[],
-  desafios: Desafios[],
-  notCompleted: NotCompleted[]
-}
-
-const indicatorsArray = [
-  {
-    name: "Converter 20 novos clientes",
-    weight: 0.4,
-    progress: 18,
-    unit: "Número",
-    goal: 20,
-    superGoal: 30,
-    challenge: 40,
-  },
-
-  {
-    name: "Converter 40 novos clientes",
-    weight: 0.4,
-    progress: 22,
-    unit: "Financeiro",
-    goal: 20,
-    superGoal: 30,
-    challenge: 40,
-  },
-
-  {
-    name: "Converter 30 novos clientes",
-    weight: 0.4,
-    progress: 33,
-    unit: "Percentual",
-    goal: 20,
-    superGoal: 30,
-    challenge: 40,
-  },
-
-  {
-    name: "Converter 10 novos clientes",
-    weight: 0.4,
-    progress: 44,
-    unit: "Número",
-    goal: 20,
-    superGoal: 30,
-    challenge: 40,
-  },
-];
+import axios from 'axios';
 
 const graphData = [
   {
@@ -206,59 +120,142 @@ const colaboratorsArray: ColaboratorCardModel[] = [
   },
 ];
 
-const notReachedArray = [
-  {
-    name: "Vender 5 caixas",
-    month: "Janeiro",
-    score: 3,
-  },
-  {
-    name: "Vender 10 produtos",
-    month: "Fevereiro",
-    score: 6,
-  },
-  {
-    name: "Concluir relatório de vendas",
-    month: "Março",
-    score: 2,
-  },
-  // Você pode adicionar mais dados fictícios aqui
-];
+interface Meta {
+  indicatorID: number;
+  progress: number;
+}
+
+interface Indicator {
+  id: number;
+  name: string;
+  weight: number;
+  meta: number;
+  supermeta: number;
+  desafio: number;
+}
+
+interface BackendData {
+  indicators: Indicator[];
+  metas: Meta[];
+  supermetas: Meta[];
+  desafios: Meta[];
+  notCompleted: Meta[];
+}
+
+const findProgressForIndicator = (indicatorId: number, arrays: (Meta[])[]): number => {
+  for (const arr of arrays) {
+    const found = arr.find((item: Meta) => item.indicatorID === indicatorId);
+    if (found) return found.progress;
+  }
+  return 0;
+};
+
+interface IndicatorCard {
+  name: string;
+  weight: number;
+  progress: number;
+  unit: string;
+  goal: number;
+  superGoal: number;
+  challenge: number;
+}
+
+interface NotReachedIndicatorCardData {
+  name: string;
+  month: string;
+  score: number;
+}
+const mapNotReachedIndicatorsToFrontend = (backendData: BackendData): Array<NotReachedIndicatorCardData> => {
+  return backendData.notCompleted.map((item: Meta) => ({
+      name: backendData.indicators.find((indicator) => indicator.id === item.indicatorID)?.name || '',
+      month: '',
+      score: item.progress || 0
+  }));
+};
+
+const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
+  return backendData.indicators.map((indicator: Indicator) => {
+    const progress = findProgressForIndicator(indicator.id, [
+      backendData.metas, 
+      backendData.supermetas, 
+      backendData.desafios, 
+      backendData.notCompleted
+    ]);
+
+    return {
+      name: indicator.name,
+      weight: indicator.weight,
+      progress: progress,
+      unit: "",  
+      goal: indicator.meta,
+      superGoal: indicator.supermeta,
+      challenge: indicator.desafio
+    };
+  });
+};
+
 
 const Profile: React.FC<ProfileProps> = () => {
   const { id } = useParams<{id: string}>();
+  interface ColaboratorData {
+    name: string;
+    area: string;
+    grade: number;
+  }
+
+  const [data, setData] = useState<ColaboratorData>({} as ColaboratorData);
+  const [indicatorsArray, setIndicatorsArray] = useState<Array<IndicatorCard>>([]);
+  const [challengePercentage, setChallengePercentage] = useState(0);
+  const [goalPercentage, setGoalPercentage] = useState(0);
+  const [superGoalPercentage, setSuperGoalPercentage] = useState(0);
+  const [totalPercentage, setTotalPercentage] = useState(0);
+  const [notReachedIndicators, setNotReachedIndicators] = useState<Array<NotReachedIndicatorCardData>>([]);
+
   const [valorDigitado, setValorDigitado] = useState("");
-  const [userData, setUserData] = useState<UserData>({} as UserData);
+  const handleSearch = (value: string) => {
+    setValorDigitado(value);
+  };
+
+  const fetchColaboratorData = async (date: Date) => {
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    try {
+      const response = await axios.get(`http://localhost:3000/colaborator/${id}?month=${month}&year=${year}`);
+      const transformedData = mapBackendNames(response.data);
+      const challengePercentage = (response.data.desafios.length / response.data.indicators.length) * 100 || 0;
+      const goalPercentage = (response.data.metas.length / response.data.indicators.length) * 100 || 0;
+      const superGoalPercentage = (response.data.supermetas.length / response.data.indicators.length) * 100 || 0;
+      const notReachedIndicators = mapNotReachedIndicatorsToFrontend(response.data);
+
+      setData(response.data); 
+      setIndicatorsArray(transformedData);
+      setNotReachedIndicators(notReachedIndicators);
+      setChallengePercentage(challengePercentage);
+      setGoalPercentage(goalPercentage);
+      setSuperGoalPercentage(superGoalPercentage);
+      setTotalPercentage((challengePercentage + goalPercentage + superGoalPercentage));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleMonthChange = (date: Date) => {
+    fetchColaboratorData(date);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/colaborator/${id}`);
-        const data = await response.json();
-        
-        setUserData(data);
-      } catch (error) {
-        console.error("Erro ao buscar dados:", error);
-      }
-    };
-
-    fetchData();
+    fetchColaboratorData(new Date());
   }, [id]);
-
-
-  const handleSearch = (query: string) => {
-    setValorDigitado(query);
-  };
 
   return (
     <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12">
       <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
-      <ColaboratorHeader name={userData.name} role={userData.area} stars={userData.grade} />
-
+      <ColaboratorHeader name={data.name} role={data.area} stars={data.grade} onMonthChange={handleMonthChange}/>
+      
       <div className="flex gap-10">
         <div className="w-full">
           <IndicatorsSummary
-            indicatorsArray={userData.indicators}
+            indicatorsArray={indicatorsArray}
             thisMonth={true}
           />
         </div>
@@ -266,13 +263,13 @@ const Profile: React.FC<ProfileProps> = () => {
           <p className="h-[36px]">Baixar</p>
           <div className="flex justify-between gap-4 w-full">
             <ReachedIndicators
-              challenge={10}
-              goal={50}
-              supergoal={20}
-              totalPercentage={80}
+              challenge={challengePercentage}
+              goal={goalPercentage}
+              supergoal={superGoalPercentage}
+              totalPercentage={totalPercentage}
             />
             <NotReachedIndicatorCard
-              notReachedIndicatorCardData={notReachedArray}
+              notReachedIndicatorCardData={notReachedIndicators}
             />
           </div>
         </div>
