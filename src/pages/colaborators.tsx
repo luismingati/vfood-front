@@ -2,126 +2,31 @@ import React from "react";
 import Searchbar from "../components/Searchbar/Searchbar";
 import ColaboratorPageHeader from "../components/ColaboratorPageHeader/ColaboratorPageHeader";
 import ColaboratorPageBody from "../components/ColaboratorPageBody/ColaboratorPageBody";
-import { useState } from "react";
-const colaboratorsArray: ColaboratorCardModel[] = [
-  {
-    name: "Thales",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Luis Felipe",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Luis Otavio",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Lucas",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Antonio",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Bruno",
-    role: "Dev",
-    stars: 4.1,
-  },
-  {
-    name: "Ana Clara",
-    role: "Dev",
-    stars: 4.5,
-  },
-  {
-    name: "Ana Beatriz",
-    role: "Dev",
-    stars: 3.2,
-  },
-  {
-    name: "Carlos Eduardo",
-    role: "Dev",
-    stars: 2.5,
-  },
-  {
-    name: "Ze",
-    role: "Dev",
-    stars: 1.5,
-  },
-  {
-    name: "Pedro",
-    role: "Dev",
-    stars: 0.5,
-  },
-  {
-    name: "Joao",
-    role: "Dev",
-    stars: 0.2,
-  },
-  {
-    name: "Maria",
-    role: "Dev",
-    stars: 4,
-  },
-  {
-    name: "Luis pedro",
-    role: "Dev",
-    stars: 3.1,
-  },
-];
-
-/*const indicatorsArray = [
-  {
-    name: "Converter 20 novos clientes",
-    weight: 0.4,
-    progress: 18,
-    unit: "Número",
-    goal: 20,
-    superGoal: 30,
-    challenge: 40,
-  },
-
-  {
-    name: "Converter 40 novos clientes",
-    weight: 0.4,
-    progress: 22,
-    unit: "Financeiro",
-    goal: 20,
-    superGoal: 30,
-    challenge: 40,
-  },
-
-  {
-    name: "Converter 30 novos clientes",
-    weight: 0.4,
-    progress: 33,
-    unit: "Percentual",
-    goal: 20,
-    superGoal: 30,
-    challenge: 40,
-  },
-
-  {
-    name: "Converter 10 novos clientes",
-    weight: 0.4,
-    progress: 44,
-    unit: "Número",
-    goal: 20,
-    superGoal: 30,
-    challenge: 40,
-  },
-];*/
-
+import { useState, useEffect } from "react";
+import axios from "axios";
 interface ColaboratorsProps {}
 const Colaborators: React.FC<ColaboratorsProps> = () => {
+  const [colaboratorsArray, setColaboratorsArray] = useState<ColaboratorCardModel[]>([]);
   const [valorDigitado, setValorDigitado] = useState("");
   const [value, setValue] = useState("");
+  useEffect(() => {
+    axios.get('http://localhost:3000/colaborator/')
+      .then((response) => {
+        const colaboratorsData = response.data.map((item: {
+          name: string;
+          area: string;
+          grade: number;
+        }) => ({
+          name: item.name,
+          role: item.area,
+          stars: item.grade,
+        }));
+        setColaboratorsArray(colaboratorsData);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar colaboradores:', error);
+      });
+  }, [colaboratorsArray]);
   const alfabeto: string = "abcdefghijklmnopqrstuvwxyz";
   const handleSearch = (query: string) => {
     setValorDigitado(query);

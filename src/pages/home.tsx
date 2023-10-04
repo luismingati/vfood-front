@@ -3,6 +3,7 @@ import Graph from "../components/Graph/Graph";
 import Searchbar from "../components/Searchbar/Searchbar";
 import MonthHighlight from "../components/MonthHighlight/MonthHighlight";
 import ColaboratorCard from "../components/ColaboratorCard/ColaboratorCard";
+import axios from "axios";
 
 interface ApiResponse {
   [month: string]: {
@@ -17,84 +18,15 @@ interface GraphDataItem {
   nFailed: number;
 }
 
-const colaboratorsArray: ColaboratorCardModel[] = [
-  {
-    name: "Thales",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Luis Felipe",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Luis Otavio",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Lucas",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Antonio",
-    role: "Dev",
-    stars: 5,
-  },
-  {
-    name: "Bruno",
-    role: "Dev",
-    stars: 4.1,
-  },
-  {
-    name: "Ana Clara",
-    role: "Dev",
-    stars: 4.5,
-  },
-  {
-    name: "Ana Beatriz",
-    role: "Dev",
-    stars: 3.2,
-  },
-  {
-    name: "Carlos Eduardo",
-    role: "Dev",
-    stars: 2.5,
-  },
-  {
-    name: "Ze",
-    role: "Dev",
-    stars: 1.5,
-  },
-  {
-    name: "Pedro",
-    role: "Dev",
-    stars: 0.5,
-  },
-  {
-    name: "Joao",
-    role: "Dev",
-    stars: 0.2,
-  },
-  {
-    name: "Maria",
-    role: "Dev",
-    stars: 4,
-  },
-  {
-    name: "Luis pedro",
-    role: "Dev",
-    stars: 3.1,
-  },
-];
-
 const Home: React.FC<HomeProps> = () => {
   const [valorDigitado, setValorDigitado] = useState("");
   const [numberOfCards, setNumberOfCards] = useState(6);
   let graphData: GraphDataItem[] = []
   
+  const [colaboratorsArray, setColaboratorsArray] = useState<
+    ColaboratorCardModel[]
+  >([]);
+
   const handleSearch = (query: string) => {
     setValorDigitado(query);
   };
@@ -143,7 +75,25 @@ const Home: React.FC<HomeProps> = () => {
 
     fetchGraphData();
 
-  }, []);
+    axios
+      .get("http://localhost:3000/colaborator/")
+      .then((response) => {
+        const colaboratorsData = response.data.map(
+          (item: { name: string; area: string; grade: number }) => ({
+            name: item.name,
+            role: item.area,
+            stars: item.grade,
+          })
+        );
+        colaboratorsData.sort(function (a: { name: string; role: string; stars: number }, b: { name: string; role: string; stars: number }) {
+          return a.stars > b.stars ? -1 : a.stars < b.stars ? 1 : 0;
+        });
+        setColaboratorsArray(colaboratorsData);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar colaboradores:", error);
+      });
+  }, [colaboratorsArray]);
 
   return (
     <div className="flex flex-1 flex-col justify-evenly h-full w-full bg-white rounded-[20px] py-9 px-12">
@@ -164,7 +114,7 @@ const Home: React.FC<HomeProps> = () => {
       </div>
       <div>
         <p className="font-poppins text-[18px] text-[#312843] my-4">
-        Ranking de colaboradores
+          Ranking de colaboradores
         </p>
         <div id="colaboratorsCardHomeDiv" className="flex w-full gap-3">
           {colaboratorsArray.slice(0, numberOfCards).map((colaborator) => {
