@@ -3,5 +3,6 @@ interface ColaboratorCardModel {
     role:string, 
     stars?:number,
     avatar?:string,
-    bg?:string
+    bg?:string,
+    id: number,
 }
