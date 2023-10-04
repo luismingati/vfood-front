@@ -21,7 +21,7 @@ interface GraphDataItem {
 const Home: React.FC<HomeProps> = () => {
   const [valorDigitado, setValorDigitado] = useState("");
   const [numberOfCards, setNumberOfCards] = useState(6);
-  let graphData: GraphDataItem[] = []
+  const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
   
   const [colaboratorsArray, setColaboratorsArray] = useState<
     ColaboratorCardModel[]
@@ -66,7 +66,9 @@ const Home: React.FC<HomeProps> = () => {
         const response = await fetch("http://localhost:3000/graph/all-graph-data");
         const data = await response.json();
 
-        graphData = transformApiResponse(data, new Date().getMonth() + 1);
+        const graphData = transformApiResponse(data, new Date().getMonth());
+
+        setGraphData(graphData);
 
       } catch (error) {
         console.log("Não foi possível resgatar os dados" ,error);
