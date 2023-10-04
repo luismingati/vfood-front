@@ -4,6 +4,19 @@ import Searchbar from "../components/Searchbar/Searchbar";
 import MonthHighlight from "../components/MonthHighlight/MonthHighlight";
 import ColaboratorCard from "../components/ColaboratorCard/ColaboratorCard";
 
+interface ApiResponse {
+  [month: string]: {
+    [type: string]: number;
+  };
+}
+
+interface GraphDataItem {
+  nGoal: number;
+  nSuperGoal: number;
+  nChallenge: number;
+  nFailed: number;
+}
+
 const colaboratorsArray: ColaboratorCardModel[] = [
   {
     name: "Thales",
@@ -77,48 +90,10 @@ const colaboratorsArray: ColaboratorCardModel[] = [
   },
 ];
 
-const graphData = [
-  {
-    nGoal: 70,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 85,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 90,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-];
-
 const Home: React.FC<HomeProps> = () => {
   const [valorDigitado, setValorDigitado] = useState("");
   const [numberOfCards, setNumberOfCards] = useState(6);
+  let graphData: GraphDataItem[] = []
   
   const handleSearch = (query: string) => {
     setValorDigitado(query);
@@ -131,6 +106,43 @@ const Home: React.FC<HomeProps> = () => {
     const colaboratorsDivWidth = colaboratorsDiv.offsetWidth;
 
     setNumberOfCards(Math.floor(colaboratorsDivWidth / 174));
+
+    function transformApiResponse(apiResponse: ApiResponse, currentMonth: number): GraphDataItem[] {
+      const graphData: GraphDataItem[] = [];
+    
+      for (let i = 0; i < 6; i++) {
+        const monthData = apiResponse[currentMonth.toString()] || {};
+        
+        const nGoal = monthData['1'] || 0;
+        const nSuperGoal = monthData['2'] || 0;
+        const nChallenge = monthData['3'] || 0;
+        const nFailed = monthData['0'] || 0;
+        
+        graphData.unshift({ nGoal, nSuperGoal, nChallenge, nFailed });
+    
+        currentMonth--;
+        if (currentMonth < 1) {
+          break;
+        }
+      }
+    
+      return graphData;
+    }
+
+    const fetchGraphData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/graph/all-graph-data");
+        const data = await response.json();
+
+        graphData = transformApiResponse(data, new Date().getMonth() + 1);
+
+      } catch (error) {
+        console.log("Não foi possível resgatar os dados" ,error);
+      }
+    }
+
+    fetchGraphData();
+
   }, []);
 
   return (
