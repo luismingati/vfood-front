@@ -118,6 +118,7 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
       });
 
     setEditIndicatorModalFlag(false);
+    model.indicatorCardUpdateData()
   };
 
   const handleEditIndicatorResult = () => {
@@ -126,17 +127,24 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
     ) as HTMLInputElement;
 
     if (input) {
-      const newProgress : number = parseInt(input.value);
+      const newProgress: number = parseInt(input.value);
       const patchData = {
-        progress: newProgress
+        progress: newProgress,
       };
-      axios.patch(`http://localhost:3000/fazer/${model.colabID}/${model.indicID}`, patchData)
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => {
-        console.error("Erro ao alterr indicador:", error);
-      });
+      axios
+        .patch(
+          `http://localhost:3000/fazer/${model.colabID}/${model.indicID}`,
+          patchData
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("Erro ao alterr indicador:", error);
+        });
+
+      setEditResultsModalFlag(false);
+      model.indicatorCardUpdateData()
     }
   };
 

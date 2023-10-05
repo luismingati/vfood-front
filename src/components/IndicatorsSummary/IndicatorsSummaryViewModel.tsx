@@ -48,6 +48,10 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     }
   }, [model, modalFlag]);
 
+  const indicatorCardUpdateData = () => {
+    model.updateData()
+  }
+
   // Funções para abrir e fechar o modal
   const openModal = () => setModalFlag(true);
   const closeModal = () => setModalFlag(false);
@@ -218,6 +222,7 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     setSuperGoal,
     setChallenge,
     handleOverlayClick,
+    indicatorCardUpdateData
   };
 };
 

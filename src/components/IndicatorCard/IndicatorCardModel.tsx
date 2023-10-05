@@ -10,4 +10,5 @@ interface IndicatorCardModel {
   thisMonth: boolean;
   colabID: number;
   indicID: number;
+  indicatorCardUpdateData: () => void;
 }
