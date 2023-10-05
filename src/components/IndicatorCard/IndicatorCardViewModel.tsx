@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 
 const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
   const [indicatorCard, setIndicatorCard] = useState<IndicatorCardModel>(model);
@@ -7,13 +8,32 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
   const [editResultsModalFlag, setEditResultsModalFlag] = useState(false);
 
   const [unitOptionsFlag, setUnitOptionsFlag] = useState(false);
-  const [unit, setUnit] = useState(indicatorCard.unit);
+  const [unit, setUnit] = useState("");
+  const [name, setName] = useState(indicatorCard.name.toString());
+  const [weight, setWeight] = useState(indicatorCard.weight.toString());
+  const [goal, setGoal] = useState(indicatorCard.goal.toString());
+  const [superGoal, setSuperGoal] = useState(
+    indicatorCard.superGoal.toString()
+  );
+  const [challenge, setChallenge] = useState(
+    indicatorCard.challenge.toString()
+  );
 
   const [progressNow, setProgressNow] = useState(999);
   const [progressColor, setProgressColor] = useState("#D9D9D9");
 
   useEffect(() => {
     setIndicatorCard(model);
+
+    if (unit == "") {
+      if (parseInt(indicatorCard.unit) == 0) {
+        setUnit("Número");
+      } else if (parseInt(indicatorCard.unit) == 1) {
+        setUnit("Financeiro");
+      } else {
+        setUnit("Percentual");
+      }
+    }
 
     // Condicional para setar as cores e o progresso do indicador
     if (!indicatorCard.thisMonth) {
@@ -32,13 +52,35 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
       }
     }
   }, [
-    indicatorCard.challenge,
-    indicatorCard.goal,
-    indicatorCard.progress,
-    indicatorCard.superGoal,
-    indicatorCard.thisMonth,
     model,
+    indicatorCard.thisMonth,
+    indicatorCard.unit,
+    indicatorCard.progress,
+    indicatorCard.goal,
+    indicatorCard.superGoal,
+    indicatorCard.challenge,
+    unit,
   ]);
+
+  // Função para fechar o modal de editar indicador no background
+  const handleOverlayClickEditIndicator = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (event.target === event.currentTarget) {
+        setEditIndicatorModalFlag(false);
+      }
+    },
+    []
+  );
+
+  // Função para fechar o modal de editar progresso do indicador no background
+  const handleOverlayClickEditResults = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (event.target === event.currentTarget) {
+        setEditResultsModalFlag(false);
+      }
+    },
+    []
+  );
 
   // Função para abrir ou fechar o modal de edição do indicador
   const changeEditIndicatorModalFlag = () =>
@@ -52,13 +94,30 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
   const changeUnitOptionsFlag = () => setUnitOptionsFlag(!unitOptionsFlag);
 
   // Função para setar a unidade de medida escolhida
-  const changeUnit = (newUnity: string) => setUnit(newUnity);
+  const changeUnit = (newUnity: string) => {
+    setUnit(newUnity);
+  };
 
-  const handleEditIndicator = () => {
-    // Função que atualiza as informações do indicador
-    // 1. Pegar o valor de todos os inputs
-    // 2. Criar um indicador auxiliar com os valores dos inputs
-    // 3. Trocar o indicador desatualizado pelo indicador auxiliar
+  const handleEditIndicator = async () => {
+    await axios
+      .patch(`http://localhost:3000/indicator/${model.indicID}`, {
+        name: name,
+        weight: parseFloat(weight),
+        type: unit == "Número" ? 0 : unit == "Financeiro" ? 1 : 2,
+        meta: unit == "Número" ? parseInt(goal) : parseFloat(goal),
+        supermeta:
+          unit == "Número" ? parseInt(superGoal) : parseFloat(superGoal),
+        desafio: unit == "Número" ? parseInt(challenge) : parseFloat(challenge),
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(model.indicID);
+        console.log(error);
+      });
+
+    setEditIndicatorModalFlag(false);
   };
 
   const handleEditIndicatorResult = () => {
@@ -86,6 +145,13 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
     handleEditIndicatorResult,
     progressNow,
     progressColor,
+    setName,
+    setWeight,
+    setGoal,
+    setSuperGoal,
+    setChallenge,
+    handleOverlayClickEditIndicator,
+    handleOverlayClickEditResults,
   };
 };
 

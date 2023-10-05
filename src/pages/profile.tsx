@@ -106,6 +106,8 @@ interface Indicator {
   id: number;
   name: string;
   weight: number;
+  unit: string;
+  type: string;
   meta: number;
   supermeta: number;
   desafio: number;
@@ -147,8 +149,8 @@ interface IndicatorCard {
   name: string;
   weight: number;
   progress: number;
-  unit: string;
   goal: number;
+  unit: string;
   superGoal: number;
   challenge: number;
   id: number;
@@ -188,7 +190,7 @@ const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
       name: indicator.name,
       weight: indicator.weight,
       progress: progress,
-      unit: "",
+      unit: indicator.type,
       goal: indicator.meta,
       superGoal: indicator.supermeta,
       challenge: indicator.desafio,
