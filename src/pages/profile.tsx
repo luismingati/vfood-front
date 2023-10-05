@@ -347,10 +347,14 @@ const Profile: React.FC<ProfileProps> = () => {
       setHandleMonthFlag(1);
     }
   }, [id, useEffectFlag, month]);
-
+  const transferir = () => {
+    navigate(`/colaborators`);
+  };
   return (
     <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12">
-      <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
+      <div onClick={transferir}>
+        <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
+      </div>
       <ColaboratorHeader
         id={data.id}
         name={data.name}
