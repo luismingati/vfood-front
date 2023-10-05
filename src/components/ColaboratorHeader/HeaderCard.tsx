@@ -4,8 +4,8 @@ import avatarIcon from "./assets/avatar.png";
 
 const HeaderCard = (props: ColaboratorCardModel) => {
   return (
-    <div className="flex flex-row items-end gap-[18px] w-[506px]">
-      <div className="pb-[10px]">
+    <div className="flex items-center gap-[18px] w-[506px]">
+      <div>
         <img
           src={props.avatar ? props.avatar : avatarIcon}
           alt="avatar"
@@ -20,7 +20,7 @@ const HeaderCard = (props: ColaboratorCardModel) => {
           {props.name}
         </p>
       </div>
-      <div className="pb-[10px]">
+      <div>
         <NoteCard note={props.stars} long={true} />
       </div>
     </div>

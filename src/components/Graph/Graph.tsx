@@ -57,7 +57,7 @@ const Graph: React.FC<GraphModel> = (props: GraphModel) => {
                   ticks: {
                     font: { size: 12, family: "Poppins" },
                     color: "#A3A3A3",
-                    stepSize: 25,
+                    stepSize: 20,
                     autoSkip: false,
                   },
                 },
@@ -77,7 +77,7 @@ const Graph: React.FC<GraphModel> = (props: GraphModel) => {
                   backgroundColor: "#AC72C1",
                   barPercentage: 0.6,
                   borderRadius: 40,
-                  categoryPercentage: graph.fullWidth ? 0.3 : 0.6,
+                  categoryPercentage: 0.6,
                 },
                 {
                   label: "Supermeta",
@@ -85,7 +85,7 @@ const Graph: React.FC<GraphModel> = (props: GraphModel) => {
                   backgroundColor: "#32B97C",
                   barPercentage: 0.6,
                   borderRadius: 40,
-                  categoryPercentage: graph.fullWidth ? 0.3 : 0.6,
+                  categoryPercentage: 0.6,
                 },
                 {
                   label: "Desafio",
@@ -93,7 +93,7 @@ const Graph: React.FC<GraphModel> = (props: GraphModel) => {
                   backgroundColor: "#6186D3",
                   barPercentage: 0.6,
                   borderRadius: 40,
-                  categoryPercentage: graph.fullWidth ? 0.3 : 0.6,
+                  categoryPercentage: 0.6,
                 },
                 {
                   label: "Não alcançado",
@@ -101,7 +101,7 @@ const Graph: React.FC<GraphModel> = (props: GraphModel) => {
                   backgroundColor: "#F16062",
                   barPercentage: 0.6,
                   borderRadius: 40,
-                  categoryPercentage: graph.fullWidth ? 0.3 : 0.6,
+                  categoryPercentage: 0.6,
                 },
               ],
             }}
