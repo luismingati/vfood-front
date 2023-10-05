@@ -1,6 +1,15 @@
 import useSearchbarViewModel from "./SearchbarViewModel";
+import { useNavigate } from "react-router-dom";
 const Searchbar = (props: SearchforColaboratorModel) => {
+  const navigate = useNavigate();
   const viewModel = useSearchbarViewModel(props);
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      props.onSearch(viewModel.search);
+      localStorage.setItem("search", viewModel.search);
+      navigate(`/colaborators`);
+    }
+  };
   return (
     <>
       <div className="flex w-full justify-center font-poppins">
@@ -18,8 +27,9 @@ const Searchbar = (props: SearchforColaboratorModel) => {
           </div>
           <input
             type="text"
-            value={viewModel.search}
+            value={(viewModel.search)}
             onChange={(e) => viewModel.setSearch(e.target.value)}
+            onKeyDownCapture={handleKeyPress}
             id="default-search"
             className=" w-full outline-none bg-transparent placeholder-searchbarBlue placeholder:font-normal placeholder:text-base"
             placeholder="Buscar colaboradores"

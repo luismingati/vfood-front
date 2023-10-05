@@ -228,9 +228,7 @@ const Profile: React.FC<ProfileProps> = () => {
   const [valorDigitado, setValorDigitado] = useState("");
 
   const handleSearch = (value: string) => {
-    if (value !== "") {
-      navigate(`/colaborators`);
-    }
+    setValorDigitado(value);
   };
 
   const updateData = () => {
@@ -347,16 +345,9 @@ const Profile: React.FC<ProfileProps> = () => {
       setHandleMonthFlag(1);
     }
   }, [id, useEffectFlag, month]);
-  
-  const transferir = () => {
-    navigate(`/colaborators`);
-  };
   return (
     <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12 overflow-y-auto no-scrollbar">
-      <div onClick={transferir}>
-        <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
-      </div>
-
+      <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
       <div className="mt-4"></div>
       <ColaboratorHeader
         id={data.id}

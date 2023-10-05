@@ -46,6 +46,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
 
   const handleSearch = (query: string) => {
     setValorDigitado(query);
+    // localStorage.removeItem("search");
   };
 
   const handleButtonClick = (valor: string) => {

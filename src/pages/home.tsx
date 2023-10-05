@@ -35,9 +35,7 @@ const Home: React.FC<HomeProps> = () => {
   >([]);
 
   const handleSearch = (query: string) => {
-    if (query !== "") {
-      navigate(`/colaborators`);
-    }
+    setValorDigitado(query);
   };
 
   useEffect(() => {
@@ -123,9 +121,7 @@ const Home: React.FC<HomeProps> = () => {
   };
   return (
     <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12 overflow-y-auto no-scrollbar">
-      <div onClick={transferir}>
         <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
-      </div>
       <header className="mt-4 mb-3">
         <h1 className="font-poppins text-[32px] font-bold text-[#312843]">
           Dashboard
