@@ -58,7 +58,9 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
 
     updateIndicatorsArrayFlag = 0;
   };
-  const closeModal = () => setModalFlag(false);
+  const closeModal = () => {
+    setModalFlag(false);
+  };
 
   // Função para fechar o modal no background
   const handleOverlayClick = useCallback(
@@ -74,6 +76,10 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
   // Função para mudar a etapa do modal
   const changeModalStep = (step: number) => {
     setIndicatorModalStep(step);
+    setIndicatorsSearchValue("");
+    setIndicatorsSearchResultsArray([]);
+    setIndicatorsSearchID(0);
+    setUnit("")
   };
 
   // Função para abrir ou fechar o select das unidades de medida

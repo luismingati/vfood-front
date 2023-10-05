@@ -36,20 +36,18 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
     }
 
     // Condicional para setar as cores e o progresso do indicador
-    if (!indicatorCard.thisMonth) {
-      if (indicatorCard.progress < indicatorCard.goal) {
-        setProgressNow(0);
-        setProgressColor("#A3A3A3");
-      } else if (indicatorCard.progress < indicatorCard.superGoal) {
-        setProgressNow(1);
-        setProgressColor("#AC72C1");
-      } else if (indicatorCard.progress < indicatorCard.challenge) {
-        setProgressNow(2);
-        setProgressColor("#32B97C");
-      } else {
-        setProgressNow(3);
-        setProgressColor("#6186D3");
-      }
+    if (indicatorCard.progress < indicatorCard.goal) {
+      setProgressNow(0);
+      setProgressColor("#A3A3A3");
+    } else if (indicatorCard.progress < indicatorCard.superGoal) {
+      setProgressNow(1);
+      setProgressColor("#AC72C1");
+    } else if (indicatorCard.progress < indicatorCard.challenge) {
+      setProgressNow(2);
+      setProgressColor("#32B97C");
+    } else {
+      setProgressNow(3);
+      setProgressColor("#6186D3");
     }
   }, [
     model,
@@ -117,7 +115,7 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
       });
 
     setEditIndicatorModalFlag(false);
-    model.indicatorCardUpdateData()
+    model.indicatorCardUpdateData();
   };
 
   const handleEditIndicatorResult = () => {
@@ -130,6 +128,7 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
       const patchData = {
         progress: newProgress,
       };
+
       axios
         .patch(
           `http://localhost:3000/fazer/${model.colabID}/${model.indicID}`,
@@ -142,8 +141,22 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
           console.error("Erro ao alterr indicador:", error);
         });
 
+      if (newProgress < indicatorCard.goal) {
+        setProgressNow(0);
+        setProgressColor("#A3A3A3");
+      } else if (newProgress < indicatorCard.superGoal) {
+        setProgressNow(1);
+        setProgressColor("#AC72C1");
+      } else if (newProgress < indicatorCard.challenge) {
+        setProgressNow(2);
+        setProgressColor("#32B97C");
+      } else {
+        setProgressNow(3);
+        setProgressColor("#6186D3");
+      }
+
       setEditResultsModalFlag(false);
-      model.indicatorCardUpdateData()
+      model.indicatorCardUpdateData();
     }
   };
 
