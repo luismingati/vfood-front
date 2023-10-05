@@ -10,45 +10,6 @@ import axios from "axios";
 
 import pdfIcon from "./assets/pdfFile.svg";
 
-const graphData = [
-  {
-    nGoal: 70,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 85,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 90,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-];
-
 const colaboratorsArray: ColaboratorCardModel[] = [
   {
     name: "Thales",
@@ -190,6 +151,7 @@ interface IndicatorCard {
   goal: number;
   superGoal: number;
   challenge: number;
+  id: number;
 }
 
 interface NotReachedIndicatorCardData {
@@ -222,6 +184,7 @@ const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
     ]);
 
     return {
+      id: indicator.id,
       name: indicator.name,
       weight: indicator.weight,
       progress: progress,

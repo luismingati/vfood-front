@@ -8,4 +8,6 @@ interface IndicatorCardModel {
   superGoal: number;
   challenge: number;
   thisMonth: boolean;
+  colabID: number;
+  indicID: number;
 }

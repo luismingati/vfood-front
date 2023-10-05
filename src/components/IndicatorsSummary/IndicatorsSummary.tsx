@@ -384,6 +384,8 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                   goal={indicatorCard.goal}
                   superGoal={indicatorCard.superGoal}
                   challenge={indicatorCard.challenge}
+                  colabID={indicatorsSummary.colabID}
+                  indicID={indicatorCard.id}
                 />
               );
             })}
@@ -762,6 +764,8 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                   goal={indicatorCard.goal}
                   superGoal={indicatorCard.superGoal}
                   challenge={indicatorCard.challenge}
+                  colabID={indicatorsSummary.colabID}
+                  indicID={indicatorCard.id}
                 />
               );
             })}

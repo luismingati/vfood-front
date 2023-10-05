@@ -6,6 +6,7 @@ interface IndicatorCard {
   goal: number;
   superGoal: number;
   challenge: number;
+  id: number;
 }
 
 interface IndicatorsSummaryModel {
