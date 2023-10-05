@@ -720,7 +720,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                 <div className="flex items-center justify-start gap-1.5">
                   <img src={starIcon} alt="" />
                   <p className="font-poppins text-[32px] font-bold text-[#312843] translate-y-[1px]">
-                    3,5
+                    {parseFloat(localStorage.getItem("grade") || "0").toFixed(1)}
                   </p>
                 </div>
               </div>

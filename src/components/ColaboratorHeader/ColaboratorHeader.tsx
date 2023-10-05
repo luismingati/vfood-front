@@ -9,7 +9,7 @@ interface ColaboratorHeaderProps extends ColaboratorCardModel {
 
 const ColaboratorHeader: React.FC<ColaboratorHeaderProps> = (props) => {
   const viewModel = useColaboratorHeaderViewModel(props);
-
+  localStorage.setItem("grade", viewModel.card.stars?.toString() || "");
   return (
     <div
       className={`flex flex-row items-center justify-between ${
