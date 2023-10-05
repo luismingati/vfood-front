@@ -369,9 +369,7 @@ const Profile: React.FC<ProfileProps> = () => {
           <IndicatorsSummary
             indicatorsArray={indicatorsArray}
             thisMonth={isCurrentDate}
-            colabID={parseInt(
-              window.location.href.charAt(window.location.href.length - 1)
-            )}
+            colabID={Number(id)}
             profilePDF={false}
             updateData={updateData}
           />

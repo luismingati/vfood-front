@@ -49,8 +49,8 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
   }, [model, modalFlag]);
 
   const indicatorCardUpdateData = () => {
-    model.updateData()
-  }
+    model.updateData();
+  };
 
   // Funções para abrir e fechar o modal
   const openModal = () => setModalFlag(true);
@@ -68,7 +68,13 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
   );
 
   // Função para mudar a etapa do modal
-  const changeModalStep = (step: number) => setIndicatorModalStep(step);
+  const changeModalStep = (step: number) => {
+    setIndicatorModalStep(step);
+    console.log(step)
+    if (step == 2) {
+      updateIndicatorsArrayFlag = 0;
+    }
+  };
 
   // Função para abrir ou fechar o select das unidades de medida
   const changeUnitOptionsFlag = () => setUnitOptionsFlag(!unitOptionsFlag);
@@ -79,6 +85,7 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
   // Função para mostrar opções de indicadores coerentes com a busca
   const handleSearchIndicators = (e: React.FormEvent<HTMLInputElement>) => {
     setIndicatorsSearchValue(e.currentTarget.value);
+    console.log(allIndicatorsArray);
 
     if (indicatorsSearchValue != "") {
       const result = allIndicatorsArray.filter((indicator) =>
@@ -169,8 +176,8 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     changeModalStep(0);
 
     // 4. Atualizar o front para aparecer o novo indicador na lista
-    updateIndicatorsArrayFlag = 0
-    model.updateData()
+    updateIndicatorsArrayFlag = 0;
+    model.updateData();
   };
   const handleAttachIndicator = () => {
     // Função de adicionar indicador existente ao colaborador
@@ -193,8 +200,8 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     changeModalStep(0);
 
     // 3. Atualizar o front para aparecer o novo indicador na lista
-    updateIndicatorsArrayFlag = 0
-    model.updateData()
+    updateIndicatorsArrayFlag = 0;
+    model.updateData();
   };
 
   return {
@@ -222,7 +229,7 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     setSuperGoal,
     setChallenge,
     handleOverlayClick,
-    indicatorCardUpdateData
+    indicatorCardUpdateData,
   };
 };
 

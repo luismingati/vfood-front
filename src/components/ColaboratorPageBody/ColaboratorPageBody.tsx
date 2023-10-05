@@ -31,7 +31,7 @@ const ColaboratorPageBody = (props: ColaboratorPageBodyModel) => {
                 else
                   return (
                     <ColaboratorCard
-                    key={index}
+                      key={index}
                       id={carta.id}
                       name={carta.name}
                       role={carta.role}
@@ -41,7 +41,8 @@ const ColaboratorPageBody = (props: ColaboratorPageBodyModel) => {
               } else {
                 if (
                   ((carta.stars || 0) <= card.contador &&
-                  (carta.stars || 0) > card.contador - 1) ||  (card.contador == 1 && carta.stars == null)
+                    (carta.stars || 0) > card.contador - 1) ||
+                  (card.contador == 1 && carta.stars == null)
                 )
                   return (
                     <ColaboratorCard

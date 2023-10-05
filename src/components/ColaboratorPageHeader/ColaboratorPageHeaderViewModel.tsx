@@ -33,7 +33,7 @@ export const useColaboratorPageHeaderViewModel = (
     const novoColaborador = {
       name: name,
       area: role,
-      grade: null,
+      grade: 999,
     };
     axios
       .post("http://localhost:3000/colaborator", novoColaborador)
