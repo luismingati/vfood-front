@@ -1,5 +1,5 @@
 interface ColaboratorCardModel { 
-    id: number,
+    id?: number,
     name:string,  
     role:string, 
     stars?:number,

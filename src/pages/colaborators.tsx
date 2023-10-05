@@ -50,17 +50,15 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
     let achei: boolean = false;
     let repetido: boolean = false;
     for (
-      let index = 5;
-      index > 0 && contador != colaboratorsArray.length;
-      index--
-    ) {
+      let index = 5;index > 0 && contador != colaboratorsArray.length;index--){
       let states: number = 0;
       achei = false;
       if (
         (colaboratorsArray[contador].stars || 0) <= index &&
         (colaboratorsArray[contador].stars || 0) > index - 1 &&
         repetido == false &&
-        dataFilter.includes(colaboratorsArray[contador])
+        dataFilter.includes(colaboratorsArray[contador]) ||
+        (colaboratorsArray[contador].stars == null && index == 1)
       ) {
         elements.push(
           <ColaboratorPageBody contador={index} ColaboratorArray={dataFilter} />

@@ -158,6 +158,19 @@ interface BackendData {
   notCompleted: Meta[];
 }
 
+interface ApiResponse {
+  [month: string]: {
+    [type: string]: number;
+  };
+}
+
+interface GraphDataItem {
+  nGoal: number;
+  nSuperGoal: number;
+  nChallenge: number;
+  nFailed: number;
+}
+
 const findProgressForIndicator = (
   indicatorId: number,
   arrays: Meta[][]
@@ -196,6 +209,8 @@ const mapNotReachedIndicatorsToFrontend = (
     score: item.progress || 0,
   }));
 };
+
+interface ProfileProps {}
 
 const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
   return backendData.indicators.map((indicator: Indicator) => {
@@ -238,7 +253,9 @@ const Profile: React.FC<ProfileProps> = () => {
   const [notReachedIndicators, setNotReachedIndicators] = useState<
     Array<NotReachedIndicatorCardData>
   >([]);
+  const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
 
+  const [isCurrentDate, setIsCurrentDate] = useState(true);
   const [valorDigitado, setValorDigitado] = useState("");
   const handleSearch = (value: string) => {
     setValorDigitado(value);
@@ -279,8 +296,59 @@ const Profile: React.FC<ProfileProps> = () => {
     }
   };
 
+  function transformApiResponse(
+    apiResponse: ApiResponse,
+    currentMonth: number
+  ): GraphDataItem[] {
+    const graphData: GraphDataItem[] = [];
+
+    for (let i = 0; i < 6; i++) {
+      const monthData = apiResponse[currentMonth.toString()] || {};
+
+      const nGoal = monthData["1"] || 0;
+      const nSuperGoal = monthData["2"] || 0;
+      const nChallenge = monthData["3"] || 0;
+      const nFailed = monthData["0"] || 0;
+
+      graphData.unshift({ nGoal, nSuperGoal, nChallenge, nFailed });
+
+      currentMonth--;
+      if (currentMonth < 1) {
+        break;
+      }
+    }
+
+    return graphData;
+  }
+
+  const fetchGraphData = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/graph/all-graph-data/${id}`
+      );
+      const data = await response.json();
+
+      const graphData = transformApiResponse(data, new Date().getMonth());
+
+      setGraphData(graphData);
+    } catch (error) {
+      console.log("Não foi possível resgatar os dados", error);
+    }
+  };
+
+  fetchGraphData();
+
   const handleMonthChange = (date: Date) => {
+    if (
+      date.getMonth() + 1 === new Date().getMonth() + 1 &&
+      date.getFullYear() === new Date().getFullYear()
+    ) {
+      setIsCurrentDate(true);
+    } else {
+      setIsCurrentDate(false);
+    }
     fetchColaboratorData(date);
+    fetchGraphData();
   };
 
   useEffect(() => {
@@ -296,13 +364,14 @@ const Profile: React.FC<ProfileProps> = () => {
         role={data.area}
         stars={data.grade}
         onMonthChange={handleMonthChange}
+        profilePDF={false}
       />
 
       <div className="flex gap-10">
         <div className="w-full">
           <IndicatorsSummary
             indicatorsArray={indicatorsArray}
-            thisMonth={true}
+            thisMonth={isCurrentDate}
             colabID={parseInt(
               window.location.href.charAt(window.location.href.length - 1)
             )}
@@ -321,10 +390,10 @@ const Profile: React.FC<ProfileProps> = () => {
           </div>
           <div className="flex justify-between gap-4 w-full">
             <ReachedIndicators
-              challenge={challengePercentage}
-              goal={goalPercentage}
-              supergoal={superGoalPercentage}
-              totalPercentage={totalPercentage}
+              challenge={parseFloat(challengePercentage.toFixed(0))}
+              goal={parseFloat(goalPercentage.toFixed(0))}
+              supergoal={parseFloat(superGoalPercentage.toFixed(0))}
+              totalPercentage={parseFloat(totalPercentage.toFixed(0))}
             />
             <NotReachedIndicatorCard
               notReachedIndicatorCardData={notReachedIndicators}
@@ -338,5 +407,3 @@ const Profile: React.FC<ProfileProps> = () => {
 };
 
 export default Profile;
-
-interface ProfileProps {}
