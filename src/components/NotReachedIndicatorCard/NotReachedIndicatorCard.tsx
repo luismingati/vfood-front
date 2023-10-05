@@ -16,7 +16,7 @@ const NotReachedIndicatorCard = (model: NotReachedIndicatorCardModel) => {
     <div className="w-[240px] h-[290px] border border-[#D9D9D9] rounded-[20px] px-[18px] py-[24px]">
       <div className="flex flex-col gap-5 w-full">
         <p className="font-poppins text-[14px] text-[#312843]">Indicadores não alcançados</p>
-        <div className="flex flex-col gap-5 w-full h-[210px] overflow-y-scroll pr-1">
+        <div className="flex flex-col gap-5 w-full h-[210px] overflow-y-scroll no-scrollbar pr-1">
           {Object.keys(dictionary).map((month, index) => (
             <div key={index} className="flex flex-col gap-0">
               {/* <p className="font-poppins text-[12px] text-[#A3A3A3]">{month.slice(0, 3)}</p> */}

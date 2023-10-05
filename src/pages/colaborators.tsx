@@ -164,7 +164,6 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
       <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
       <ColaboratorPageHeader onclick={handleButtonClick} />
       {value == "Ranking" ? rankingOrder({}) : alphabeticalOrder({})}
-      {/* <IndicatorsSummary thisMonth={true} indicatorsArray={indicatorsArray} /> */}
     </div>
   );
 };

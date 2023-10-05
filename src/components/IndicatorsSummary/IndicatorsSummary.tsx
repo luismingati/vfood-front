@@ -44,10 +44,18 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
 
   if (indicatorsSummary.indicatorsArray.length == 0) {
     return (
-      <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto no-scrollbar">
-        <div className="flex justify-between items-center mb-4">
-          <p className="font-poppins text-[16px] text-[#312843]">Indicadores</p>
-        </div>
+      <div
+        className={`w-full ${
+          !indicatorsSummary.profilePDF ? "max-w-[508px] max-h-[335px]" : ""
+        } overflow-auto no-scrollbar`}
+      >
+        {!indicatorsSummary.profilePDF && (
+          <div className="flex justify-between items-center mb-4">
+            <p className="font-poppins text-[16px] text-[#312843]">
+              Indicadores
+            </p>
+          </div>
+        )}
 
         <div className="bg-[#f5f5f56b] h-[202px] rounded-[20px] p-6 mb-3 flex flex-col justify-center items-center gap-7">
           <p className="font-poppins text-[16px] text-[#312843] max-w-[325px] text-center">
@@ -343,19 +351,25 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
   } else {
     if (indicatorsSummary.thisMonth) {
       return (
-        <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto  no-scrollbar [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3">
-          <div className="flex justify-between items-center mb-4">
-            <p className="font-poppins text-[16px] text-[#312843]">
-              Indicadores
-            </p>
-            <button
-              onClick={() => openModal()}
-              className="font-poppins text-[16px] font-bold text-[#FDFDFD] bg-[#952323] px-4 py-[6px] rounded-lg flex justify-between items-center gap-2"
-            >
-              <img src={plusIcon} alt="" />
-              <span>Atribuir Indicador</span>
-            </button>
-          </div>
+        <div
+          className={`w-full ${
+            !indicatorsSummary.profilePDF ? "max-w-[508px] max-h-[335px]" : ""
+          } overflow-auto no-scrollbar [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3`}
+        >
+          {!indicatorsSummary.profilePDF && (
+            <div className="flex justify-between items-center mb-4">
+              <p className="font-poppins text-[16px] text-[#312843]">
+                Indicadores
+              </p>
+              <button
+                onClick={() => openModal()}
+                className="font-poppins text-[16px] font-bold text-[#FDFDFD] bg-[#952323] px-4 py-[6px] rounded-lg flex justify-between items-center gap-2"
+              >
+                <img src={plusIcon} alt="" />
+                <span>Atribuir Indicador</span>
+              </button>
+            </div>
+          )}
           <div>
             {indicatorsSummary.indicatorsArray.map((indicatorCard, index) => {
               return (
@@ -657,16 +671,22 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
       );
     } else {
       return (
-        <div className="w-full max-w-[508px] pr-[2px] max-h-[289px] overflow-auto no-scrollbar [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3">
-          <div className="flex justify-between items-center mb-4">
-            <p className="font-poppins text-[16px] text-[#312843]">
-              Indicadores
-            </p>
-            <button className="font-poppins text-[16px] font-bold text-[#FDFDFD] bg-[#A3A3A3] px-4 py-[6px] rounded-lg flex justify-between items-center gap-2 pointer-events-none">
-              <img src={plusIcon} alt="" />
-              <span>Atribuir Indicador</span>
-            </button>
-          </div>
+        <div
+          className={`w-full ${
+            !indicatorsSummary.profilePDF ? "max-w-[508px] max-h-[335px]" : ""
+          } overflow-auto no-scrollbar [&>*:last-child]:flex [&>*:last-child]:flex-col [&>*:last-child]:gap-3`}
+        >
+          {!indicatorsSummary.profilePDF && (
+            <div className="flex justify-between items-center mb-4">
+              <p className="font-poppins text-[16px] text-[#312843]">
+                Indicadores
+              </p>
+              <button className="font-poppins text-[16px] font-bold text-[#FDFDFD] bg-[#A3A3A3] px-4 py-[6px] rounded-lg flex justify-between items-center gap-2 pointer-events-none">
+                <img src={plusIcon} alt="" />
+                <span>Atribuir Indicador</span>
+              </button>
+            </div>
+          )}
           <div className="bg-[#f5f5f56b] rounded-[20px] p-6 mb-3 flex gap-7">
             <div className="flex items-center gap-3 w-2/3">
               <div className="max-w-[104px] max-h-[104px]">

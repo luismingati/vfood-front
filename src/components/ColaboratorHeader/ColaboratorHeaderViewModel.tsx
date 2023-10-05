@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useColaboratorHeaderViewModel = (model: ColaboratorCardModel & { onMonthChange: (date: Date) => void }) => {
+const useColaboratorHeaderViewModel = (model: ColaboratorCardModel & { onMonthChange: (date: Date) => void, profilePDF: boolean }) => {
     const [card, setCard] = useState<ColaboratorCardModel>(model)
 
     useEffect(() => {
@@ -8,12 +8,12 @@ const useColaboratorHeaderViewModel = (model: ColaboratorCardModel & { onMonthCh
     }, [model])
 
     const handleMonthChange = (month: Date) => {
-        model.onMonthChange(month); 
+        model.onMonthChange(month);
     }
 
     return {
         card,
-        handleMonthChange
+        handleMonthChange,
     }
 }
 

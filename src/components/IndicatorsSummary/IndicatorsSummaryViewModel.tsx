@@ -5,6 +5,8 @@ interface IndicatorCardComplete extends IndicatorCard {
   id: number;
 }
 
+let updateIndicatorsArrayFlag = 0;
+
 const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
   const [indicatorsSummary, setIndicatorsSummary] =
     useState<IndicatorsSummaryModel>(model);
@@ -31,15 +33,19 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
   useEffect(() => {
     setIndicatorsSummary(model);
 
-    axios
-      .get("http://localhost:3000/indicator/")
-      .then((response) => {
-        console.log(response);
-        setAllIndicatorsArray(response.data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar indicadores:", error);
-      });
+    if (!updateIndicatorsArrayFlag) {
+      axios
+        .get("http://localhost:3000/indicator/")
+        .then((response) => {
+          console.log(response);
+          setAllIndicatorsArray(response.data);
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar indicadores:", error);
+        });
+
+      updateIndicatorsArrayFlag = 1;
+    }
   }, [model, modalFlag]);
 
   // Funções para abrir e fechar o modal
@@ -159,6 +165,7 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     changeModalStep(0);
 
     // 4. Atualizar o front para aparecer o novo indicador na lista
+    updateIndicatorsArrayFlag = 0
   };
   const handleAttachIndicator = () => {
     // Função de adicionar indicador existente ao colaborador
@@ -181,6 +188,7 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
     changeModalStep(0);
 
     // 3. Atualizar o front para aparecer o novo indicador na lista
+    updateIndicatorsArrayFlag = 0
   };
 
   return {
