@@ -221,6 +221,8 @@ const Profile: React.FC<ProfileProps> = () => {
   >([]);
   const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
   const [useEffectFlag, setUseEffectFlag] = useState(0);
+  const [handleMonthFlag, setHandleMonthFlag] = useState(0);
+  const [month, setMonth] = useState<Date>();
 
   const [isCurrentDate, setIsCurrentDate] = useState(true);
   const [valorDigitado, setValorDigitado] = useState("");
@@ -233,6 +235,11 @@ const Profile: React.FC<ProfileProps> = () => {
 
   const updateData = () => {
     setUseEffectFlag(0);
+  };
+
+  const updateMonth = (date: Date) => {
+    setHandleMonthFlag(0);
+    setMonth(date);
   };
 
   const fetchColaboratorData = async (date: Date) => {
@@ -310,25 +317,36 @@ const Profile: React.FC<ProfileProps> = () => {
     }
   };
 
-  const handleMonthChange = (date: Date) => {
-    if (
-      date.getMonth() + 1 === new Date().getMonth() + 1 &&
-      date.getFullYear() === new Date().getFullYear()
-    ) {
-      setIsCurrentDate(true);
-    } else {
-      setIsCurrentDate(false);
-    }
-  };
-
   useEffect(() => {
     fetchGraphData();
-    
+
     if (!useEffectFlag) {
       fetchColaboratorData(new Date());
       setUseEffectFlag(1);
     }
-  }, [id, useEffectFlag]);
+
+    if (!handleMonthFlag) {
+      if (
+        month &&
+        month.getMonth() + 1 === new Date().getMonth() + 1 &&
+        month.getFullYear() === new Date().getFullYear()
+      ) {
+        setIsCurrentDate(true);
+      } else {
+        if (month == undefined) {
+          setIsCurrentDate(true);
+        } else {
+          setIsCurrentDate(false);
+        }
+      }
+
+      if (month) {
+        fetchColaboratorData(month);
+        fetchGraphData();
+      }
+      setHandleMonthFlag(1);
+    }
+  }, [id, useEffectFlag, month]);
 
   return (
     <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12">
@@ -338,7 +356,7 @@ const Profile: React.FC<ProfileProps> = () => {
         name={data.name}
         role={data.area}
         stars={data.grade}
-        onMonthChange={handleMonthChange}
+        onMonthChange={updateMonth}
         profilePDF={false}
       />
 

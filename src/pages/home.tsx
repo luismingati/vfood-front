@@ -24,11 +24,12 @@ const Home: React.FC<HomeProps> = () => {
   const [valorDigitado, setValorDigitado] = useState("");
   const [numberOfCards, setNumberOfCards] = useState(6);
   const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
-  
+
   const date = new Date();
   const currentMonth = date.toLocaleDateString("pt-BR", { month: "long" });
-  const currentMonthCapitalized = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
-  
+  const currentMonthCapitalized =
+    currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
+
   const [colaboratorsArray, setColaboratorsArray] = useState<
     ColaboratorCardModel[]
   >([]);
@@ -47,41 +48,45 @@ const Home: React.FC<HomeProps> = () => {
 
     setNumberOfCards(Math.floor(colaboratorsDivWidth / 174));
 
-    function transformApiResponse(apiResponse: ApiResponse, currentMonth: number): GraphDataItem[] {
+    function transformApiResponse(
+      apiResponse: ApiResponse,
+      currentMonth: number
+    ): GraphDataItem[] {
       const graphData: GraphDataItem[] = [];
-    
+
       for (let i = 0; i < 6; i++) {
         const monthData = apiResponse[currentMonth.toString()] || {};
-        
-        const nGoal = monthData['1'] || 0;
-        const nSuperGoal = monthData['2'] || 0;
-        const nChallenge = monthData['3'] || 0;
-        const nFailed = monthData['0'] || 0;
-        
+
+        const nGoal = monthData["1"] || 0;
+        const nSuperGoal = monthData["2"] || 0;
+        const nChallenge = monthData["3"] || 0;
+        const nFailed = monthData["0"] || 0;
+
         graphData.unshift({ nGoal, nSuperGoal, nChallenge, nFailed });
-    
+
         currentMonth--;
         if (currentMonth < 1) {
           break;
         }
       }
-    
+
       return graphData;
     }
 
     const fetchGraphData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/graph/all-graph-data");
+        const response = await fetch(
+          "http://localhost:3000/graph/all-graph-data"
+        );
         const data = await response.json();
 
         const graphData = transformApiResponse(data, new Date().getMonth());
 
         setGraphData(graphData);
-
       } catch (error) {
-        console.log("Não foi possível resgatar os dados" ,error);
+        console.log("Não foi possível resgatar os dados", error);
       }
-    }
+    };
 
     fetchGraphData();
 
@@ -89,14 +94,22 @@ const Home: React.FC<HomeProps> = () => {
       .get("http://localhost:3000/colaborator/")
       .then((response) => {
         const colaboratorsData = response.data.map(
-          (item: { id: number, name: string; area: string; grade: number }) => ({
+          (item: {
+            id: number;
+            name: string;
+            area: string;
+            grade: number;
+          }) => ({
             id: item.id,
             name: item.name,
             role: item.area,
             stars: item.grade,
           })
         );
-        colaboratorsData.sort(function (a: { name: string; role: string; stars: number }, b: { name: string; role: string; stars: number }) {
+        colaboratorsData.sort(function (
+          a: { name: string; role: string; stars: number },
+          b: { name: string; role: string; stars: number }
+        ) {
           return a.stars > b.stars ? -1 : a.stars < b.stars ? 1 : 0;
         });
         setColaboratorsArray(colaboratorsData);
@@ -104,7 +117,7 @@ const Home: React.FC<HomeProps> = () => {
       .catch((error) => {
         console.error("Erro ao buscar colaboradores:", error);
       });
-  }, [colaboratorsArray]);
+  }, []);
 
   return (
     <div className="flex flex-1 flex-col justify-evenly h-full w-full bg-white rounded-[20px] py-9 px-12">
@@ -128,18 +141,21 @@ const Home: React.FC<HomeProps> = () => {
           Ranking de colaboradores
         </p>
         <div id="colaboratorsCardHomeDiv" className="flex w-full gap-3">
-          {colaboratorsArray.slice(0, numberOfCards).map((colaborator) => {
-            return (
-              <ColaboratorCard
-                name={colaborator.name}
-                role={colaborator.role}
-                stars={colaborator.stars}
-                avatar={colaborator.avatar}
-                bg={colaborator.bg}
-                id={colaborator.id}
-              />
-            );
-          })}
+          {colaboratorsArray
+            .slice(0, numberOfCards)
+            .map((colaborator, index) => {
+              return (
+                <ColaboratorCard
+                  key={index}
+                  name={colaborator.name}
+                  role={colaborator.role}
+                  stars={colaborator.stars}
+                  avatar={colaborator.avatar}
+                  bg={colaborator.bg}
+                  id={colaborator.id}
+                />
+              );
+            })}
         </div>
       </div>
     </div>

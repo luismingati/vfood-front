@@ -38,12 +38,12 @@ const IndicatorCard = (props: IndicatorCardModel) => {
               {indicatorCard.thisMonth ? "" : `#${indicatorCard.number} `}
               {indicatorCard.name}
             </p>
-            <img
+            {indicatorCard.thisMonth && <img
               onClick={() => changeEditIndicatorModalFlag()}
               className="cursor-pointer"
               src={editIcon}
               alt=""
-            />
+            />}
           </div>
           <span className="font-poppins text-[14px] text-[#A3A3A3]">
             Peso: {indicatorCard.weight}
@@ -53,7 +53,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
           className={`flex justify-center items-center min-w-[48px] max-w-[48px] min-h-[48px] max-h-[48px] ${
             progressNow !== 999 ? `bg-[${progressColor}]` : "bg-[#D9D9D9]"
           } rounded-[50%] cursor-pointer`}
-          onClick={() => changeEditResultsModalFlag()}
+          onClick={indicatorCard.thisMonth ? () => changeEditResultsModalFlag() : () => {}}
         >
           <p
             className={`pt-[1px] font-poppins text-[20px] font-bold ${

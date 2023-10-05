@@ -113,7 +113,6 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
         console.log(response);
       })
       .catch(function (error) {
-        console.log(model.indicID);
         console.log(error);
       });
 
