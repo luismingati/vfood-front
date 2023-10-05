@@ -351,10 +351,12 @@ const Profile: React.FC<ProfileProps> = () => {
     navigate(`/colaborators`);
   };
   return (
-    <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12">
+    <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12 overflow-y-auto no-scrollbar">
       <div onClick={transferir}>
         <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
       </div>
+
+      <div className="mt-4"></div>
       <ColaboratorHeader
         id={data.id}
         name={data.name}
@@ -363,8 +365,9 @@ const Profile: React.FC<ProfileProps> = () => {
         onMonthChange={updateMonth}
         profilePDF={false}
       />
+      <div className="mb-3"></div>
 
-      <div className="flex gap-10">
+      <div className="flex gap-10 mb-5">
         <div className="w-full">
           <IndicatorsSummary
             indicatorsArray={indicatorsArray}

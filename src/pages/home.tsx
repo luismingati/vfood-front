@@ -122,7 +122,7 @@ const Home: React.FC<HomeProps> = () => {
     navigate(`/colaborators`);
   };
   return (
-    <div className="flex flex-1 flex-col justify-evenly h-full w-full bg-white rounded-[20px] py-9 px-12">
+    <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12 overflow-y-auto no-scrollbar">
       <div onClick={transferir}>
         <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
       </div>
@@ -144,7 +144,7 @@ const Home: React.FC<HomeProps> = () => {
         <p className="font-poppins text-[18px] text-[#312843] my-4">
           Ranking de colaboradores
         </p>
-        <div id="colaboratorsCardHomeDiv" className="flex w-full gap-3">
+        <div id="colaboratorsCardHomeDiv" className="flex justify-between w-full gap-3">
           {colaboratorsArray
             .slice(0, numberOfCards)
             .map((colaborator, index) => {

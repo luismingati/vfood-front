@@ -193,6 +193,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                             : ""
                         } mb-2 select-none caret-transparent disabled w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]`}
                         defaultValue={unit}
+                        readOnly
                       />
                       <ul
                         className={`flex flex-col gap-1 ${
@@ -515,6 +516,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                               : ""
                           } mb-2 select-none caret-transparent disabled w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]`}
                           defaultValue={unit}
+                          readOnly
                         />
                         <ul
                           className={`flex flex-col gap-1 ${
