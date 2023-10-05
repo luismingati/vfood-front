@@ -12,4 +12,5 @@ interface IndicatorsSummaryModel {
   indicatorsArray: Array<IndicatorCard>;
   thisMonth: boolean;
   colabID: number;
+  profilePDF: boolean;
 }

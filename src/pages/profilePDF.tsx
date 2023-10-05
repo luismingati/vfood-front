@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import Searchbar from "../components/Searchbar/Searchbar";
+import React, { useState, useEffect, useRef } from "react";
 import ColaboratorHeader from "../components/ColaboratorHeader/ColaboratorHeader";
 import IndicatorsSummary from "../components/IndicatorsSummary/IndicatorsSummary";
 import NotReachedIndicatorCard from "../components/NotReachedIndicatorCard/NotReachedIndicatorCard";
@@ -8,7 +7,9 @@ import ReachedIndicators from "../components/ReachedIndicators/ReachedIndicators
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-import pdfIcon from "./assets/pdfFile.svg";
+import ReactToPrint from "react-to-print";
+
+let useEffectFlag = 0;
 
 const graphData = [
   {
@@ -46,93 +47,6 @@ const graphData = [
     nSuperGoal: 60,
     nChallenge: 30,
     nFailed: 15,
-  },
-];
-
-const colaboratorsArray: ColaboratorCardModel[] = [
-  {
-    name: "Thales",
-    role: "Dev",
-    stars: 5,
-    id: 1,
-  },
-  {
-    name: "Luis Felipe",
-    role: "Dev",
-    stars: 5,
-    id: 2,
-  },
-  {
-    name: "Luis Otavio",
-    role: "Dev",
-    stars: 5,
-    id: 3,
-  },
-  {
-    name: "Lucas",
-    role: "Dev",
-    stars: 5,
-    id: 4,
-  },
-  {
-    name: "Antonio",
-    role: "Dev",
-    stars: 5,
-    id: 5,
-  },
-  {
-    name: "Bruno",
-    role: "Dev",
-    stars: 4.1,
-    id: 6,
-  },
-  {
-    name: "Ana Clara",
-    role: "Dev",
-    stars: 4.5,
-    id: 7,
-  },
-  {
-    name: "Ana Beatriz",
-    role: "Dev",
-    stars: 3.2,
-    id: 8,
-  },
-  {
-    name: "Carlos Eduardo",
-    role: "Dev",
-    stars: 2.5,
-    id: 9,
-  },
-  {
-    name: "Ze",
-    role: "Dev",
-    stars: 1.5,
-    id: 10,
-  },
-  {
-    name: "Pedro",
-    role: "Dev",
-    stars: 0.5,
-    id: 11,
-  },
-  {
-    name: "Joao",
-    role: "Dev",
-    stars: 0.2,
-    id: 12,
-  },
-  {
-    name: "Maria",
-    role: "Dev",
-    stars: 4,
-    id: 13,
-  },
-  {
-    name: "Luis pedro",
-    role: "Dev",
-    stars: 3.1,
-    id: 14,
   },
 ];
 
@@ -210,8 +124,6 @@ const mapNotReachedIndicatorsToFrontend = (
   }));
 };
 
-interface ProfileProps {}
-
 const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
   return backendData.indicators.map((indicator: Indicator) => {
     const progress = findProgressForIndicator(indicator.id, [
@@ -233,7 +145,9 @@ const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
   });
 };
 
-const Profile: React.FC<ProfileProps> = () => {
+const ProfilePDF: React.FC<ProfilePDFProps> = () => {
+  let componentRef = useRef();
+
   const { id } = useParams<{ id: string }>();
   interface ColaboratorData {
     id: number;
@@ -254,12 +168,6 @@ const Profile: React.FC<ProfileProps> = () => {
     Array<NotReachedIndicatorCardData>
   >([]);
   const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
-
-  const [isCurrentDate, setIsCurrentDate] = useState(true);
-  const [valorDigitado, setValorDigitado] = useState("");
-  const handleSearch = (value: string) => {
-    setValorDigitado(value);
-  };
 
   const fetchColaboratorData = async (date: Date) => {
     const month = date.getMonth() + 1;
@@ -335,75 +243,73 @@ const Profile: React.FC<ProfileProps> = () => {
       console.log("Não foi possível resgatar os dados", error);
     }
   };
-
-  fetchGraphData();
-
-  const handleMonthChange = (date: Date) => {
-    if (
-      date.getMonth() + 1 === new Date().getMonth() + 1 &&
-      date.getFullYear() === new Date().getFullYear()
-    ) {
-      setIsCurrentDate(true);
-    } else {
-      setIsCurrentDate(false);
-    }
-    fetchColaboratorData(date);
-    fetchGraphData();
-  };
-
   useEffect(() => {
-    fetchColaboratorData(new Date());
-  }, [id]);
+    if (!useEffectFlag) {
+      fetchGraphData();
+      fetchColaboratorData(new Date());
+      useEffectFlag = 1;
+    }
+  });
 
   return (
-    <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12">
-      <Searchbar colaborators={colaboratorsArray} onSearch={handleSearch} />
-      <ColaboratorHeader
-        id={data.id}
-        name={data.name}
-        role={data.area}
-        stars={data.grade}
-        onMonthChange={handleMonthChange}
-        profilePDF={false}
+    <div className="flex flex-col items-center gap-4 py-3 bg-[#952323]">
+      <p className="font-poppins text-center text-[16px] text-white w-1/2 ">
+        Aqui você pode ver o relatório do(a) colaborador(a) {data.name}. Se
+        estiver tudo certo, clique no botão abaixo para fazer o download em PDF!
+      </p>
+      <ReactToPrint
+        trigger={() => (
+          <button className="font-poppins text-center text-[16px] text-[#952323] bg-white py-2 px-5 rounded-2xl hover:bg-[#381313] hover:text-white transition-all duration-300">
+            Baixar relatório
+          </button>
+        )}
+        content={() => componentRef}
       />
+      <div
+        ref={(el) => (componentRef = el)}
+        className="p-8 flex flex-col items-center gap-5 w-full max-w-[1178px] mx-auto bg-white rounded-[20px]"
+      >
+        <ColaboratorHeader
+          id={data.id}
+          name={data.name}
+          role={data.area}
+          stars={data.grade}
+          onMonthChange={() => {}}
+          profilePDF={true}
+        />
 
-      <div className="flex gap-10">
-        <div className="w-full">
-          <IndicatorsSummary
-            indicatorsArray={indicatorsArray}
-            thisMonth={isCurrentDate}
-            colabID={parseInt(
-              window.location.href.charAt(window.location.href.length - 1)
-            )}
-            profilePDF={false}
-          />
-        </div>
-        <div className="flex flex-col items-end w-full">
-          <div
-            className="flex items-center gap-3 mb-[14px] cursor-pointer"
-            onClick={() => window.open(`/colaborators/pdf/${id}`)}
-          >
-            <img src={pdfIcon} alt="" />
-            <p className="font-poppins text-[16px] text-[#7c7c7c] underline">
-              Baixar resultados
-            </p>
-          </div>
-          <div className="flex justify-between gap-4 w-full">
-            <ReachedIndicators
-              challenge={parseFloat(challengePercentage.toFixed(0))}
-              goal={parseFloat(goalPercentage.toFixed(0))}
-              supergoal={parseFloat(superGoalPercentage.toFixed(0))}
-              totalPercentage={parseFloat(totalPercentage.toFixed(0))}
-            />
-            <NotReachedIndicatorCard
-              notReachedIndicatorCardData={notReachedIndicators}
-            />
+        <hr className="h-[1px] w-full " />
+
+        <div className="flex gap-10">
+          <div className="flex flex-col items-end w-full">
+            <div className="flex justify-between gap-4 w-full">
+              <ReachedIndicators
+                challenge={challengePercentage}
+                goal={goalPercentage}
+                supergoal={superGoalPercentage}
+                totalPercentage={totalPercentage}
+              />
+              <NotReachedIndicatorCard
+                notReachedIndicatorCardData={notReachedIndicators}
+              />
+            </div>
           </div>
         </div>
+
+        <IndicatorsSummary
+          indicatorsArray={indicatorsArray}
+          thisMonth={true}
+          colabID={parseInt(
+            window.location.href.charAt(window.location.href.length - 1)
+          )}
+          profilePDF={true}
+        />
+        <Graph graphData={graphData} fullWidth={true} />
       </div>
-      <Graph graphData={graphData} fullWidth={true} />
     </div>
   );
 };
 
-export default Profile;
+export default ProfilePDF;
+
+interface ProfilePDFProps {}
