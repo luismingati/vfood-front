@@ -39,8 +39,8 @@ const ColaboratorPageBody = (props: ColaboratorPageBodyModel) => {
                   );
               } else {
                 if (
-                  (carta.stars || 0) <= card.contador &&
-                  (carta.stars || 0) > card.contador - 1
+                  ((carta.stars || 0) <= card.contador &&
+                  (carta.stars || 0) > card.contador - 1) ||  (card.contador == 1 && carta.stars == null)
                 )
                   return (
                     <ColaboratorCard
