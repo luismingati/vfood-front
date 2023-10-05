@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import chevron from '../../assets/chevron.svg';
 import profile from '../../assets/perfil.svg';
 import Modal from '../Modal/Modal';
@@ -20,6 +21,7 @@ const CardHighlight: React.FC<CardHighlightProps> = (props: CardHighlightProps) 
       <div className='flex flex-col gap-3 h-full max-h-96 overflow-y-auto no-scrollbar'>
         {props.data && props.data.map((item) => {
         return (
+          <Link to={`/colaborators/${item.id}`}>
             <div key={item.id} className='flex items-center justify-between py-[10px] px-4'>
               <div className='flex gap-3'>
                 <img src={profile} alt="" />
@@ -30,6 +32,7 @@ const CardHighlight: React.FC<CardHighlightProps> = (props: CardHighlightProps) 
               </div>
               <NoteCard note={item.grade} long={false}/>
             </div>
+          </Link>
           );
         })}
       </div>

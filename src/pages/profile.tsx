@@ -347,6 +347,7 @@ const Profile: React.FC<ProfileProps> = () => {
       setHandleMonthFlag(1);
     }
   }, [id, useEffectFlag, month]);
+  
   const transferir = () => {
     navigate(`/colaborators`);
   };
