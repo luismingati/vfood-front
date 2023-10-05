@@ -83,12 +83,16 @@ const IndicatorCard = (props: IndicatorCardModel) => {
             >
               {!indicatorCard.thisMonth && <img src={checkIcon} alt="" />}
               <p className="font-poppins text-[20px] font-bold text-white translate-y-[1.3px]">
+                {indicatorCard.unit == "1" ? "R$ " : ""}
                 {indicatorCard.goal}
+                {indicatorCard.unit == "2" ? "%" : ""}
               </p>
             </div>
           ) : (
             <p className="font-poppins text-[20px] font-bold text-[#312843]">
+              {indicatorCard.unit == "1" ? "R$ " : ""}
               {indicatorCard.goal}
+              {indicatorCard.unit == "2" ? "%" : ""}
             </p>
           )}
         </div>
@@ -106,12 +110,16 @@ const IndicatorCard = (props: IndicatorCardModel) => {
             >
               {!indicatorCard.thisMonth && <img src={checkIcon} alt="" />}
               <p className="font-poppins text-[20px] font-bold text-white translate-y-[1.3px]">
+                {indicatorCard.unit == "1" ? "R$ " : ""}
                 {indicatorCard.superGoal}
+                {indicatorCard.unit == "2" ? "%" : ""}
               </p>
             </div>
           ) : (
             <p className="font-poppins text-[20px] font-bold text-[#312843]">
+              {indicatorCard.unit == "1" ? "R$ " : ""}
               {indicatorCard.superGoal}
+              {indicatorCard.unit == "2" ? "%" : ""}
             </p>
           )}
         </div>
@@ -129,12 +137,16 @@ const IndicatorCard = (props: IndicatorCardModel) => {
             >
               {!indicatorCard.thisMonth && <img src={checkIcon} alt="" />}
               <p className="font-poppins text-[20px] font-bold text-white translate-y-[1.3px]">
+                {indicatorCard.unit == "1" ? "R$ " : ""}
                 {indicatorCard.challenge}
+                {indicatorCard.unit == "2" ? "%" : ""}
               </p>
             </div>
           ) : (
             <p className="font-poppins text-[20px] font-bold text-[#312843]">
+              {indicatorCard.unit == "1" ? "R$ " : ""}
               {indicatorCard.challenge}
+              {indicatorCard.unit == "2" ? "%" : ""}
             </p>
           )}
         </div>
