@@ -11,7 +11,7 @@ const useNoteCardViewModel = (model: NoteCardModel) => {
 
     const handleColorBackground = (updatedCard:NoteCardModel) => {
 
-        if (updatedCard.note != 999){
+        if (updatedCard.note != undefined){
             if (updatedCard.note > 4.0){
                 updatedCard.bg = "bg-[#6186D3]"
             }else if (updatedCard.note > 3.0){
@@ -22,7 +22,6 @@ const useNoteCardViewModel = (model: NoteCardModel) => {
                 updatedCard.bg = "bg-[#F16062]"
             }
         }else{
-            updatedCard.note = undefined
             updatedCard.bg = "bg-[#A3A3A3]"
         }
 

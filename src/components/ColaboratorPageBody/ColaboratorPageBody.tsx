@@ -16,7 +16,7 @@ const ColaboratorPageBody = (props: ColaboratorPageBodyModel) => {
             {stars()}
           </div>
         )}
-        <div className=" w-[88.7%] h-[2px] bg-[#D9D9D9] mt-[12.5px]"></div>
+        <div className=" w-full h-[2px] bg-[#D9D9D9] mt-[12.5px]"></div>
       </div>
       <div className="flex">
         <div className="flex flex-row flex-wrap gap-[10px] w-max-[860px] ml-[20px]">
