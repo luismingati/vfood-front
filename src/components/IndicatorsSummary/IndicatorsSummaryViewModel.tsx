@@ -166,6 +166,7 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
 
     // 4. Atualizar o front para aparecer o novo indicador na lista
     updateIndicatorsArrayFlag = 0
+    model.updateData()
   };
   const handleAttachIndicator = () => {
     // Função de adicionar indicador existente ao colaborador
@@ -189,6 +190,7 @@ const useIndicatorsSummaryViewModel = (model: IndicatorsSummaryModel) => {
 
     // 3. Atualizar o front para aparecer o novo indicador na lista
     updateIndicatorsArrayFlag = 0
+    model.updateData()
   };
 
   return {

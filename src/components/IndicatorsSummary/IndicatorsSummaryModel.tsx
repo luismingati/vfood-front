@@ -14,4 +14,5 @@ interface IndicatorsSummaryModel {
   thisMonth: boolean;
   colabID: number;
   profilePDF: boolean;
+  updateData: () => void;
 }

@@ -217,11 +217,17 @@ const Profile: React.FC<ProfileProps> = () => {
     Array<NotReachedIndicatorCardData>
   >([]);
   const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
+  const [useEffectFlag, setUseEffectFlag] = useState(0);
 
   const [isCurrentDate, setIsCurrentDate] = useState(true);
   const [valorDigitado, setValorDigitado] = useState("");
+
   const handleSearch = (value: string) => {
     setValorDigitado(value);
+  };
+
+  const updateData = () => {
+    setUseEffectFlag(0);
   };
 
   const fetchColaboratorData = async (date: Date) => {
@@ -299,8 +305,6 @@ const Profile: React.FC<ProfileProps> = () => {
     }
   };
 
-  fetchGraphData();
-
   const handleMonthChange = (date: Date) => {
     if (
       date.getMonth() + 1 === new Date().getMonth() + 1 &&
@@ -310,13 +314,16 @@ const Profile: React.FC<ProfileProps> = () => {
     } else {
       setIsCurrentDate(false);
     }
-    fetchColaboratorData(date);
-    fetchGraphData();
   };
 
   useEffect(() => {
-    fetchColaboratorData(new Date());
-  }, [id]);
+    fetchGraphData();
+    
+    if (!useEffectFlag) {
+      fetchColaboratorData(new Date());
+      setUseEffectFlag(1);
+    }
+  }, [id, useEffectFlag]);
 
   return (
     <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12">
@@ -339,6 +346,7 @@ const Profile: React.FC<ProfileProps> = () => {
               window.location.href.charAt(window.location.href.length - 1)
             )}
             profilePDF={false}
+            updateData={updateData}
           />
         </div>
         <div className="flex flex-col items-end w-full">
