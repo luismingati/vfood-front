@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import pdfIcon from "./assets/pdfFile.svg";
-
+import { useNavigate } from "react-router-dom";
 const colaboratorsArray: ColaboratorCardModel[] = [
   {
     name: "Thales",
@@ -199,6 +199,7 @@ const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
 };
 
 const Profile: React.FC<ProfileProps> = () => {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   interface ColaboratorData {
     id: number;
@@ -225,7 +226,9 @@ const Profile: React.FC<ProfileProps> = () => {
   const [valorDigitado, setValorDigitado] = useState("");
 
   const handleSearch = (value: string) => {
-    setValorDigitado(value);
+    if (value !== "") {
+      navigate(`/colaborators`);
+    }
   };
 
   const updateData = () => {
