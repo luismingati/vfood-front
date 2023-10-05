@@ -6,6 +6,7 @@ interface IndicatorCard {
   goal: number;
   superGoal: number;
   challenge: number;
+  id: number;
 }
 
 interface IndicatorsSummaryModel {
@@ -13,4 +14,5 @@ interface IndicatorsSummaryModel {
   thisMonth: boolean;
   colabID: number;
   profilePDF: boolean;
+  updateData: () => void;
 }

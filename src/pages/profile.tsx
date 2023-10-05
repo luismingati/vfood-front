@@ -9,46 +9,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import pdfIcon from "./assets/pdfFile.svg";
-
-const graphData = [
-  {
-    nGoal: 70,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 85,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 90,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-];
-
+import { useNavigate } from "react-router-dom";
 const colaboratorsArray: ColaboratorCardModel[] = [
   {
     name: "Thales",
@@ -145,6 +106,8 @@ interface Indicator {
   id: number;
   name: string;
   weight: number;
+  unit: string;
+  type: string;
   meta: number;
   supermeta: number;
   desafio: number;
@@ -186,10 +149,11 @@ interface IndicatorCard {
   name: string;
   weight: number;
   progress: number;
-  unit: string;
   goal: number;
+  unit: string;
   superGoal: number;
   challenge: number;
+  id: number;
 }
 
 interface NotReachedIndicatorCardData {
@@ -222,10 +186,11 @@ const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
     ]);
 
     return {
+      id: indicator.id,
       name: indicator.name,
       weight: indicator.weight,
       progress: progress,
-      unit: "",
+      unit: indicator.type,
       goal: indicator.meta,
       superGoal: indicator.supermeta,
       challenge: indicator.desafio,
@@ -234,6 +199,7 @@ const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
 };
 
 const Profile: React.FC<ProfileProps> = () => {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   interface ColaboratorData {
     id: number;
@@ -254,11 +220,26 @@ const Profile: React.FC<ProfileProps> = () => {
     Array<NotReachedIndicatorCardData>
   >([]);
   const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
+  const [useEffectFlag, setUseEffectFlag] = useState(0);
+  const [handleMonthFlag, setHandleMonthFlag] = useState(0);
+  const [month, setMonth] = useState<Date>();
 
   const [isCurrentDate, setIsCurrentDate] = useState(true);
   const [valorDigitado, setValorDigitado] = useState("");
+
   const handleSearch = (value: string) => {
-    setValorDigitado(value);
+    if (value !== "") {
+      navigate(`/colaborators`);
+    }
+  };
+
+  const updateData = () => {
+    setUseEffectFlag(0);
+  };
+
+  const updateMonth = (date: Date) => {
+    setHandleMonthFlag(0);
+    setMonth(date);
   };
 
   const fetchColaboratorData = async (date: Date) => {
@@ -336,24 +317,36 @@ const Profile: React.FC<ProfileProps> = () => {
     }
   };
 
-  fetchGraphData();
-
-  const handleMonthChange = (date: Date) => {
-    if (
-      date.getMonth() + 1 === new Date().getMonth() + 1 &&
-      date.getFullYear() === new Date().getFullYear()
-    ) {
-      setIsCurrentDate(true);
-    } else {
-      setIsCurrentDate(false);
-    }
-    fetchColaboratorData(date);
-    fetchGraphData();
-  };
-
   useEffect(() => {
-    fetchColaboratorData(new Date());
-  }, [id]);
+    fetchGraphData();
+
+    if (!useEffectFlag) {
+      fetchColaboratorData(new Date());
+      setUseEffectFlag(1);
+    }
+
+    if (!handleMonthFlag) {
+      if (
+        month &&
+        month.getMonth() + 1 === new Date().getMonth() + 1 &&
+        month.getFullYear() === new Date().getFullYear()
+      ) {
+        setIsCurrentDate(true);
+      } else {
+        if (month == undefined) {
+          setIsCurrentDate(true);
+        } else {
+          setIsCurrentDate(false);
+        }
+      }
+
+      if (month) {
+        fetchColaboratorData(month);
+        fetchGraphData();
+      }
+      setHandleMonthFlag(1);
+    }
+  }, [id, useEffectFlag, month]);
 
   return (
     <div className="flex flex-1 flex-col justify-between h-full w-full bg-white rounded-[20px] py-9 px-12">
@@ -363,7 +356,7 @@ const Profile: React.FC<ProfileProps> = () => {
         name={data.name}
         role={data.area}
         stars={data.grade}
-        onMonthChange={handleMonthChange}
+        onMonthChange={updateMonth}
         profilePDF={false}
       />
 
@@ -376,6 +369,7 @@ const Profile: React.FC<ProfileProps> = () => {
               window.location.href.charAt(window.location.href.length - 1)
             )}
             profilePDF={false}
+            updateData={updateData}
           />
         </div>
         <div className="flex flex-col items-end w-full">

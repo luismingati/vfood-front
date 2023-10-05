@@ -20,6 +20,13 @@ const IndicatorCard = (props: IndicatorCardModel) => {
     handleEditIndicatorResult,
     progressNow,
     progressColor,
+    setName,
+    setWeight,
+    setGoal,
+    setSuperGoal,
+    setChallenge,
+    handleOverlayClickEditIndicator,
+    handleOverlayClickEditResults,
   } = useIndicatorCardViewModel(props);
 
   return (
@@ -31,12 +38,12 @@ const IndicatorCard = (props: IndicatorCardModel) => {
               {indicatorCard.thisMonth ? "" : `#${indicatorCard.number} `}
               {indicatorCard.name}
             </p>
-            <img
+            {indicatorCard.thisMonth && <img
               onClick={() => changeEditIndicatorModalFlag()}
               className="cursor-pointer"
               src={editIcon}
               alt=""
-            />
+            />}
           </div>
           <span className="font-poppins text-[14px] text-[#A3A3A3]">
             Peso: {indicatorCard.weight}
@@ -46,7 +53,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
           className={`flex justify-center items-center min-w-[48px] max-w-[48px] min-h-[48px] max-h-[48px] ${
             progressNow !== 999 ? `bg-[${progressColor}]` : "bg-[#D9D9D9]"
           } rounded-[50%] cursor-pointer`}
-          onClick={() => changeEditResultsModalFlag()}
+          onClick={indicatorCard.thisMonth ? () => changeEditResultsModalFlag() : () => {}}
         >
           <p
             className={`pt-[1px] font-poppins text-[20px] font-bold ${
@@ -128,7 +135,10 @@ const IndicatorCard = (props: IndicatorCardModel) => {
       </div>
 
       {editIndicatorModalFlag && (
-        <div className="fixed w-full h-full top-0 left-0 bg-[#00000067] flex justify-center items-center">
+        <div
+          onClick={handleOverlayClickEditIndicator}
+          className="fixed w-full h-full top-0 left-0 bg-[#00000067] flex justify-center items-center"
+        >
           <div className="w-full max-w-[393px] bg-white rounded-[10px] py-6 px-5">
             <div className="flex justify-center items-center w-full relative mb-7">
               <p className="font-poppins text-[18px] font-bold">
@@ -157,7 +167,8 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorName"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={indicatorCard.name}
+                    defaultValue={indicatorCard.name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </label>
                 <label
@@ -172,7 +183,8 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorWeight"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={indicatorCard.weight}
+                    defaultValue={indicatorCard.weight}
+                    onChange={(e) => setWeight(e.target.value)}
                   />
                 </label>
                 <label
@@ -207,6 +219,7 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                       unitOptionsFlag ? "hidden" : unit === "" ? "hidden" : ""
                     } mb-2 select-none caret-transparent disabled w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]`}
                     value={unit}
+                    readOnly
                   />
                   <ul
                     className={`flex flex-col gap-1 ${
@@ -260,7 +273,8 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorGoal"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={indicatorCard.goal}
+                    defaultValue={indicatorCard.goal}
+                    onChange={(e) => setGoal(e.target.value)}
                   />
                 </label>
                 <label
@@ -275,7 +289,8 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorSupergoal"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={indicatorCard.superGoal}
+                    defaultValue={indicatorCard.superGoal}
+                    onChange={(e) => setSuperGoal(e.target.value)}
                   />
                 </label>
                 <label
@@ -290,7 +305,8 @@ const IndicatorCard = (props: IndicatorCardModel) => {
                     id="indicatorChallenge"
                     placeholder=""
                     className="w-full border-none focus:border-transparent focus:outline-none focus:ring-0 font-poppins text-[16px] text-[#312843]"
-                    value={indicatorCard.challenge}
+                    defaultValue={indicatorCard.challenge}
+                    onChange={(e) => setChallenge(e.target.value)}
                   />
                 </label>
               </div>
@@ -306,7 +322,10 @@ const IndicatorCard = (props: IndicatorCardModel) => {
       )}
 
       {editResultsModalFlag && (
-        <div className="fixed w-full h-full top-0 left-0 bg-[#00000067] flex justify-center items-center">
+        <div
+          onClick={handleOverlayClickEditResults}
+          className="fixed w-full h-full top-0 left-0 bg-[#00000067] flex justify-center items-center"
+        >
           <div className="w-full max-w-[393px] bg-white rounded-[10px] py-6 px-5">
             <div className="flex justify-center items-center w-full relative mb-7">
               <p className="font-poppins text-[18px] font-bold">

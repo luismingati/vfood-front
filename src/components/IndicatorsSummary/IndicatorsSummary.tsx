@@ -40,6 +40,7 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
     setSuperGoal,
     setChallenge,
     handleOverlayClick,
+    indicatorCardUpdateData
   } = useIndicatorsSummaryViewModel(props);
 
   if (indicatorsSummary.indicatorsArray.length == 0) {
@@ -384,6 +385,9 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                   goal={indicatorCard.goal}
                   superGoal={indicatorCard.superGoal}
                   challenge={indicatorCard.challenge}
+                  colabID={indicatorsSummary.colabID}
+                  indicID={indicatorCard.id}
+                  indicatorCardUpdateData={indicatorCardUpdateData}
                 />
               );
             })}
@@ -762,6 +766,9 @@ const IndicatorsSummary = (props: IndicatorsSummaryModel) => {
                   goal={indicatorCard.goal}
                   superGoal={indicatorCard.superGoal}
                   challenge={indicatorCard.challenge}
+                  colabID={indicatorsSummary.colabID}
+                  indicID={indicatorCard.id}
+                  indicatorCardUpdateData={indicatorCardUpdateData}
                 />
               );
             })}
