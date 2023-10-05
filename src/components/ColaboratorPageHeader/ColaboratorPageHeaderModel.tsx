@@ -1,6 +1,7 @@
 interface ColaboratorPageHeaderProps {
-    button?: string;
-    onclick: (valor: string) => void,
-    name?: string,
-    role?: string,
+  button?: string;
+  onclick: (valor: string) => void;
+  updateArray: () => void;
+  name?: string;
+  role?: string;
 }

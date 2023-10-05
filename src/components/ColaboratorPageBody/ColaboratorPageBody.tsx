@@ -20,7 +20,7 @@ const ColaboratorPageBody = (props: ColaboratorPageBodyModel) => {
       </div>
       <div className="flex">
         <div className="flex flex-row flex-wrap gap-[10px] w-max-[860px] ml-[20px]">
-          {cards.map((carta) => {
+          {cards.map((carta, index) => {
             {
               if (card.contador > 5) {
                 if (
@@ -31,6 +31,7 @@ const ColaboratorPageBody = (props: ColaboratorPageBodyModel) => {
                 else
                   return (
                     <ColaboratorCard
+                    key={index}
                       id={carta.id}
                       name={carta.name}
                       role={carta.role}
