@@ -4,6 +4,7 @@ import Searchbar from "../components/Searchbar/Searchbar";
 import MonthHighlight from "../components/MonthHighlight/MonthHighlight";
 import ColaboratorCard from "../components/ColaboratorCard/ColaboratorCard";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface ApiResponse {
   [month: string]: {
@@ -19,6 +20,7 @@ interface GraphDataItem {
 }
 
 const Home: React.FC<HomeProps> = () => {
+  const navigate = useNavigate();
   const [valorDigitado, setValorDigitado] = useState("");
   const [numberOfCards, setNumberOfCards] = useState(6);
   const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
@@ -32,7 +34,9 @@ const Home: React.FC<HomeProps> = () => {
   >([]);
 
   const handleSearch = (query: string) => {
-    setValorDigitado(query);
+    if (query !== "") {
+      navigate(`/colaborators`);
+    }
   };
 
   useEffect(() => {
