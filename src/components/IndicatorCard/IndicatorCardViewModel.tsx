@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
   const [indicatorCard, setIndicatorCard] = useState<IndicatorCardModel>(model);
@@ -62,13 +63,21 @@ const useIndicatorCardViewModel = (model: IndicatorCardModel) => {
   };
 
   const handleEditIndicatorResult = () => {
-    // Função que atualiza o progresso do colaborador no indicador
     const input = document.querySelector(
       "#indicatorNewProgress"
     ) as HTMLInputElement;
 
     if (input) {
-      // Coloar o input.value no progresso do indicador do colaborador
+      const newProgress : number = parseInt(input.value);
+      const patchData = {
+        progress: newProgress
+      };
+      axios.patch(`http://localhost:3000/fazer/${model.colabID}/${model.indicID}`, patchData)
+      .then((response) => {
+      })
+      .catch((error) => {
+        console.error("Erro ao alterr indicador:", error);
+      });
     }
   };
 
