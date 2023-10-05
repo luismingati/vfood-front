@@ -69,7 +69,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
     let repetido: boolean = false;
     for (
       let index = 5;
-      index > 0 && contador != colaboratorsArray.length;
+      index >= 0 && contador != colaboratorsArray.length;
       index--
     ) {
       let states: number = 0;
@@ -78,8 +78,7 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
         ((colaboratorsArray[contador].stars || 0) <= index &&
           (colaboratorsArray[contador].stars || 0) > index - 1 &&
           repetido == false &&
-          dataFilter.includes(colaboratorsArray[contador])) ||
-        (colaboratorsArray[contador].stars == null && index == 1)
+          dataFilter.includes(colaboratorsArray[contador])) 
       ) {
         elements.push(
           <ColaboratorPageBody contador={index} ColaboratorArray={dataFilter} />
