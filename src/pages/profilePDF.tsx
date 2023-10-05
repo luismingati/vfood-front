@@ -7,7 +7,6 @@ import ReachedIndicators from "../components/ReachedIndicators/ReachedIndicators
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-import pdfIcon from "./assets/pdfFile.svg";
 import ReactToPrint from "react-to-print";
 
 let useEffectFlag = 0;
@@ -71,6 +70,19 @@ interface BackendData {
   supermetas: Meta[];
   desafios: Meta[];
   notCompleted: Meta[];
+}
+
+interface ApiResponse {
+  [month: string]: {
+    [type: string]: number;
+  };
+}
+
+interface GraphDataItem {
+  nGoal: number;
+  nSuperGoal: number;
+  nChallenge: number;
+  nFailed: number;
 }
 
 const findProgressForIndicator = (
@@ -155,6 +167,7 @@ const ProfilePDF: React.FC<ProfilePDFProps> = () => {
   const [notReachedIndicators, setNotReachedIndicators] = useState<
     Array<NotReachedIndicatorCardData>
   >([]);
+  const [graphData, setGraphData] = useState<GraphDataItem[]>([]);
 
   const fetchColaboratorData = async (date: Date) => {
     const month = date.getMonth() + 1;
@@ -191,8 +204,48 @@ const ProfilePDF: React.FC<ProfilePDFProps> = () => {
     }
   };
 
+  function transformApiResponse(
+    apiResponse: ApiResponse,
+    currentMonth: number
+  ): GraphDataItem[] {
+    const graphData: GraphDataItem[] = [];
+
+    for (let i = 0; i < 6; i++) {
+      const monthData = apiResponse[currentMonth.toString()] || {};
+
+      const nGoal = monthData["1"] || 0;
+      const nSuperGoal = monthData["2"] || 0;
+      const nChallenge = monthData["3"] || 0;
+      const nFailed = monthData["0"] || 0;
+
+      graphData.unshift({ nGoal, nSuperGoal, nChallenge, nFailed });
+
+      currentMonth--;
+      if (currentMonth < 1) {
+        break;
+      }
+    }
+
+    return graphData;
+  }
+
+  const fetchGraphData = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/graph/all-graph-data/${id}`
+      );
+      const data = await response.json();
+
+      const graphData = transformApiResponse(data, new Date().getMonth());
+
+      setGraphData(graphData);
+    } catch (error) {
+      console.log("Não foi possível resgatar os dados", error);
+    }
+  };
   useEffect(() => {
     if (!useEffectFlag) {
+      fetchGraphData();
       fetchColaboratorData(new Date());
       useEffectFlag = 1;
     }
@@ -201,8 +254,8 @@ const ProfilePDF: React.FC<ProfilePDFProps> = () => {
   return (
     <div className="flex flex-col items-center gap-4 py-3 bg-[#952323]">
       <p className="font-poppins text-center text-[16px] text-white w-1/2 ">
-        Aqui você pode ver o relatório do(a) colaborador(a) {data.name}. Se estiver
-        tudo certo, clique no botão abaixo para fazer o download em PDF!
+        Aqui você pode ver o relatório do(a) colaborador(a) {data.name}. Se
+        estiver tudo certo, clique no botão abaixo para fazer o download em PDF!
       </p>
       <ReactToPrint
         trigger={() => (
