@@ -185,6 +185,12 @@ const Colaborators: React.FC<ColaboratorsProps> = () => {
         onclick={handleButtonClick}
         updateArray={updateColabArray}
       />
+      {dataFilter.length == 0 ?  
+      <div className=" w-full h-full flex justify-center items-center pb-20">
+        <p className="font-poppins text-[25px] text-[#1b1a1a] text-center">
+          Nenhum colaborador foi encontrado...
+        </p>
+      </div>: null}
       {value == "Ranking" ? rankingOrder({}) : alphabeticalOrder({})}
     </div>
   );
