@@ -11,43 +11,19 @@ import ReactToPrint from "react-to-print";
 
 let useEffectFlag = 0;
 
-const graphData = [
-  {
-    nGoal: 70,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 85,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 90,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
-  {
-    nGoal: 80,
-    nSuperGoal: 60,
-    nChallenge: 30,
-    nFailed: 15,
-  },
+const monthArray = [
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
 ];
 
 interface Meta {
@@ -104,6 +80,7 @@ interface IndicatorCard {
   goal: number;
   superGoal: number;
   challenge: number;
+  id: number;
 }
 
 interface NotReachedIndicatorCardData {
@@ -134,6 +111,7 @@ const mapBackendNames = (backendData: BackendData): Array<IndicatorCard> => {
     ]);
 
     return {
+      id: indicator.id,
       name: indicator.name,
       weight: indicator.weight,
       progress: progress,
@@ -176,6 +154,7 @@ const ProfilePDF: React.FC<ProfilePDFProps> = () => {
       const response = await axios.get(
         `http://localhost:3000/colaborator/${id}?month=${month}&year=${year}`
       );
+      document.title = `${response.data.name} - ${monthArray[month - 1]}`;
       const transformedData = mapBackendNames(response.data);
       const challengePercentage =
         (response.data.desafios.length / response.data.indicators.length) *
@@ -303,6 +282,7 @@ const ProfilePDF: React.FC<ProfilePDFProps> = () => {
             window.location.href.charAt(window.location.href.length - 1)
           )}
           profilePDF={true}
+          updateData={() => {}}
         />
         <Graph graphData={graphData} fullWidth={true} />
       </div>
