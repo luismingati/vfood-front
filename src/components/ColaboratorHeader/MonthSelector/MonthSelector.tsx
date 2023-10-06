@@ -14,7 +14,7 @@ const MonthSelector: React.FC<MonthSelectorModel> = ({ onMonthChange }) => {
         <span className="material-symbols-outlined">chevron_left</span>
       </button>
 
-      <p className="font-poppins text-[18px] text-center w-[150px]">{viewModel.selectedMonth.toLocaleDateString("default", { month: "long", year: "numeric" })}</p>
+      <p className="font-poppins text-[18px] text-center w-[169px]">{viewModel.selectedMonth.toLocaleDateString("default", { month: "long", year: "numeric" })}</p>
       
       <button onClick={viewModel.goToNextMonth} className="h-[24px]" disabled={viewModel.shouldDisableNextMonth()}>
         <span className={`material-symbols-outlined ${viewModel.shouldDisableNextMonth() ? "text-[#A3A3A3]" : ""}`}>chevron_right</span>
